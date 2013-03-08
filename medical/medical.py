@@ -514,7 +514,7 @@ patient_data ()
 
 class appointment (osv.osv):
 	_name = "medical.appointment"
-
+	
 #Additions from Nhomar Hernandez (nhomar)
 
 	def copy(self, cr, uid, id, default=None, context=None):
@@ -545,6 +545,11 @@ class appointment (osv.osv):
 		'appointment_date' : fields.datetime ('Date and Time'),
 		'institution' : fields.many2one ('res.partner','Health Center', domain=[('is_institution', '=', "1")],help="Medical Center"),
 		'speciality' : fields.many2one ('medical.speciality','Speciality', help="Medical Speciality / Sector"),
+		'state': fields.selection([('open', 'Confirmed'),
+                                    ('draft', 'Unconfirmed'),
+                                    ('cancel', 'Cancelled'),
+                                    ('done', 'Done')], 'State', \
+                                    size=16, readonly=True),
 		'urgency' : fields.selection([
 				('a','Normal'),
 				('b','Urgent'),

@@ -37,25 +37,18 @@
 			<field name="type">form</field>
 			<field name="arch" type="xml">
 				<form string="Appointment">
-					<group colspan="4">
+					<group col="6" colspan="6">
 						<field name="name"></field>
-						<newline/>
 						<field name="institution"></field>
-						<newline/>
 						<field name="patient" required="1"></field>
 						<field name="appointment_date" required="1"></field>
-						<newline/>
 						<field name="urgency"></field>
 						<field name="patient_status"></field>
-					</group>
-					<newline/>
-					<group colspan="4">
 						<field name="doctor" required="1" ></field>
 						<field name="speciality"></field>
 					</group>
 					<newline/>
-
-					<separator colspan="4" string="Information"/>
+					<separator colspan="6" string="Information"/>
 					<newline/>
 					<field colspan="4" nolabel="1" name="comments"></field>
 				</form>
