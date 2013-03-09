@@ -61,8 +61,6 @@ class insurance (osv.osv):
 		}
 insurance ()
 
-
-
 class partner_patient (osv.osv):
 	_name = "res.partner"
 	_inherit = "res.partner"
@@ -70,9 +68,9 @@ class partner_patient (osv.osv):
 		'date' : fields.date('Partner since',help="Date of activation of the partner or patient"),
 		'alias' : fields.char('alias', size=64),
 		'ref': fields.char('ID Number', size=64),
-                'is_person' : fields.boolean('Person', help="Check if the partner is a person."),
                 'is_patient' : fields.boolean('Patient', help="Check if the partner is a patient"),
                 'is_doctor' : fields.boolean('Doctor', help="Check if the partner is a doctor"),
+                'is_person' : fields.boolean('Person', help="Check if the partner is a person"),
 		'is_institution' : fields.boolean ('Institution', help="Check if the partner is a Medical Center"),
 		'lastname' : fields.char('Last Name', size=128, help="Last Name"),
 		'insurance' : fields.one2many ('medical.insurance','name',"Insurance"),	
@@ -94,10 +92,7 @@ class partner_patient (osv.osv):
 				name = record['lastname'] + ', '+name
 			res.append((record['id'], name))
 		return res
-
-
 partner_patient ()
-
 
 class product_medical (osv.osv):
 	_name = "product.product"
@@ -110,7 +105,6 @@ class product_medical (osv.osv):
 	}
 product_medical ()
 
-
 #Add the partner relationship field to the contacts.
 class partner_patient_address (osv.osv):
 	_name = "res.partner.address"
@@ -120,7 +114,6 @@ class partner_patient_address (osv.osv):
 		'relative_id' : fields.many2one('res.partner','Relative Partner ID', domain=[('is_patient', '=', True)], help="If the relative is also a patient, please include it here"),
 	}
 partner_patient_address ()
-
 
 class procedure_code (osv.osv):
 	_description = "Medical Procedure"
@@ -139,10 +132,7 @@ class procedure_code (osv.osv):
         	ids += self.search(cr, uid, args2, limit=limit)
         	res = self.name_get(cr, uid, ids, context)
         	return res
-
 procedure_code ()
-
-
 
 class pathology_category(osv.osv):
         def name_get(self, cr, uid, ids, context={}):
@@ -186,9 +176,7 @@ class pathology_category(osv.osv):
                 'active' : lambda *a: 1,
         }
         _order = 'parent_id,id'
-
 pathology_category()
-
 
 class pathology (osv.osv):
 	_name = "medical.pathology"
@@ -216,9 +204,45 @@ class pathology (osv.osv):
         	ids += self.search(cr, uid, args2, limit=limit)
         	res = self.name_get(cr, uid, ids, context)
         	return res
-
 pathology ()
 
+class depilation_place (osv.osv):
+	_name = "medical.depilation_place"
+	_description = "Depilation place"
+	_columns = {
+		'name' : fields.char ('Name', size=128),
+		'description' : fields.text ('Description'),
+	}
+
+        _sql_constraints = [
+                ('code_uniq', 'unique (name)', 'The depilation place must be unique')]
+depilation_place()
+
+# PATIENT DEPILATION TREATMENT
+class patient_depilation (osv.osv):
+
+	_name = "medical.patient.depilation"
+	_description = "Patient depilation"
+	_columns = {
+		'name' : fields.many2one ('medical.patient','Patient ID'),
+		'doctor' : fields.many2one('medical.physician','Physician', help="Physician who prescribed the medicament"),
+		'place_depilation' : fields.many2one('medical.depilation_place','Place depilation', help="Place who prescribed the depilation action"),
+		'date': fields.date('Date'),
+		'number_session': fields.integer('# of session'),
+		'energy':
+            fields.float('Energy', digits=(16, 4)),
+		'notes' : fields.text ('Extra Info'),
+		#photos before
+		'bf_photo1' : fields.binary ('Photo 1'),
+		'bf_photo2' : fields.binary ('Photo 2'),
+		'bf_photo3' : fields.binary ('Photo 3'),
+		#photos then
+		'af_photo1' : fields.binary ('Photo 1'),
+		'af_photo2' : fields.binary ('Photo 2'),
+		'af_photo3' : fields.binary ('Photo 3'),
+		}	
+	_order = 'name desc, date desc, number_session desc, place_depilation desc, energy desc, doctor desc'
+patient_depilation ()
 
 class medicament (osv.osv):
 
@@ -247,11 +271,7 @@ class medicament (osv.osv):
 		'qty_available' : fields.related ('name','qty_available',type='float',string='Quantity Available'),
 		'notes' : fields.text ('Extra Info'),
 		}
-
 medicament ()
-
-
-
 
 class operational_area (osv.osv):
 	_name = "medical.operational_area"
@@ -262,7 +282,6 @@ class operational_area (osv.osv):
 
         _sql_constraints = [
                 ('code_uniq', 'unique (name)', 'The Operational Area code name must be unique')]
-
 operational_area ()
 
 class operational_sector (osv.osv):
@@ -275,7 +294,6 @@ class operational_sector (osv.osv):
 
         _sql_constraints = [
                 ('code_uniq', 'unique (name,operational_area)', 'The Operational Sector code and OP Area combination must be unique')]
-
 operational_sector ()
 
 class family_code (osv.osv):
@@ -289,7 +307,6 @@ class family_code (osv.osv):
 
         _sql_constraints = [
                 ('code_uniq', 'unique (name)', 'The Family code name must be unique')]
-
 family_code ()
 
 class speciality (osv.osv):
@@ -300,9 +317,7 @@ class speciality (osv.osv):
 	}
         _sql_constraints = [
                 ('code_uniq', 'unique (name)', 'The Medical Speciality code must be unique')]
-
 speciality ()
-
 
 class physician (osv.osv):
 
@@ -323,12 +338,7 @@ class physician (osv.osv):
 		rec_name = 'name'
 		res = [(r['id'], r[rec_name][1]) for r in self.read(cr, uid, ids, [rec_name], context)]
 		return res
-
 physician ()
-
-
-
-
 
 class ethnic_group (osv.osv):
 	_name ="medical.ethnicity"
@@ -336,7 +346,6 @@ class ethnic_group (osv.osv):
 		'name' : fields.char ('Ethnic group',size=128),
 		'code' : fields.char ('Code',size=64),
 		}
-
 ethnic_group ()
 
 class occupation (osv.osv):
@@ -354,9 +363,7 @@ class medical_dose (osv.osv):
 		'name' : fields.char ('Unit',size=32),
 		'desc' : fields.char ('Description',size=64),
 		}
-
 medical_dose ()
-
 
 class medical_drug_route (osv.osv):
 	_name = "medical.drug.route"
@@ -366,7 +373,6 @@ class medical_drug_route (osv.osv):
 		}
 medical_drug_route ()
 
-
 class medical_drug_form (osv.osv):
 	_name = "medical.drug.form"
 	_columns = {
@@ -375,9 +381,7 @@ class medical_drug_form (osv.osv):
 		}
 medical_drug_form ()
 
-
 # PATIENT GENERAL INFORMATION 
-	
 class patient_data (osv.osv):
 
 	def name_get(self, cr, user, ids, context={}):
@@ -452,13 +456,12 @@ class patient_data (osv.osv):
 	_name = "medical.patient"
 	_description = "Patient related information"
 	_columns = {
-                'name' : fields.many2one('res.partner','Patient', required="1", domain=[('is_patient', '=', True),('is_person', '=', True) ], help="Patient Name"),
+                'name' : fields.many2one('res.partner','Patient', required="1", domain=[('is_patient', '=', True)], help="Patient Name"),
                 'patient_id': fields.char('ID', size=64, required=True, select=True, help="Patient Identifier provided by the Health Center. Is not the patient id from the partner form"),	
 		'lastname' : fields.related ('name','lastname',type='char',string='Lastname'), 
 		'family_code' : fields.many2one ('medical.family_code','Family',help="Family Code"),
 		'identifier' : fields.related ('name','ref',type='char',string='SSN', help="Social Security Number or National ID"),
 		'current_insurance': fields.many2one ('medical.insurance',"Insurance", domain="[('name','=',name)]",help="Insurance information. You may choose from the different insurances belonging to the patient"),
-		'current_address': fields.many2one ('res.partner.address', "Address", domain="[('partner_id','=',name)]", help="Contact information. You may choose from the different contacts and addresses this patient has"),
 		'primary_care_doctor': fields.many2one('medical.physician','Primary Care Doctor', help="Current primary care / family doctor"),
 
 		'photo' : fields.binary ('Picture'),
@@ -485,12 +488,11 @@ class patient_data (osv.osv):
 				('+','+'),
 				('-','-'),
 				], 'Rh'),
-
-
 		'user_id':fields.related('name','user_id',type='many2one',relation='res.partner',string='Doctor',help="Physician that logs in the local Medical system (HIS), on the health center. It doesn't necesarily has do be the same as the Primary Care doctor"),
 		'ethnic_group' : fields.many2one ('medical.ethnicity','Ethnic group'),
 		'vaccinations': fields.one2many ('medical.vaccination','name',"Vaccinations"),
 		'medications' : fields.one2many('medical.patient.medication','name','Medications'),
+		'depilations_ids' : fields.one2many('medical.patient.depilation','name','Depilations'),
 		'prescriptions': fields.one2many ('medical.prescription.order','name',"Prescriptions"),
 		'diseases' : fields.one2many ('medical.patient.disease', 'name', 'Diseases'),
 		'critical_info' : fields.text ('Important disease, allergy or procedures information',help="Write any important information on the patient's disease, surgeries, allergies, ..."),
@@ -509,7 +511,6 @@ class patient_data (osv.osv):
 		
         _sql_constraints = [
                 ('name_uniq', 'unique (name)', 'The Patient already exists')]
-
 patient_data ()
 
 class appointment (osv.osv):
@@ -580,13 +581,9 @@ class appointment (osv.osv):
 		'appointment_date': lambda *a: time.strftime('%Y-%m-%d %H:%M:%S'),
 		'patient_status': lambda *a: 'ambulatory',
         	}
-	
-
 appointment ()
 
-
 # PATIENT DISESASES INFORMATION
-
 class patient_disease_info (osv.osv):
 
 	def name_get(self, cr, uid, ids, context={}):
@@ -599,7 +596,7 @@ class patient_disease_info (osv.osv):
 	_name = "medical.patient.disease"
 	_description = "Disease info"
 	_columns = {
-		'name' : fields.many2one ('medical.patient','Patient ID',readonly=True),
+		'name' : fields.many2one ('medical.patient','Patient ID'),
 		'pathology' : fields.many2one ('medical.pathology','Disease',required=True, help="Disease"),
 		'disease_severity' : fields.selection ([
 			('1_mi','Mild'),
@@ -608,8 +605,8 @@ class patient_disease_info (osv.osv):
 			], 'Severity', select=True),		
 		'is_on_treatment' : fields.boolean ('Currently on Treatment'),
 		'is_infectious' : fields.boolean ('Infectious Disease',help="Check if the patient has an infectious / transmissible disease"),		
-		'short_comment' : fields.char ('Remarks', size=128,help="Brief, one-line remark of the disease. Longer description will go on the Extra info field"),
-		'doctor' : fields.many2one('medical.physician','Physician', help="Physician who treated or diagnosed the patient"),
+		'short_comment' : fields.char ('Remarks', size=128, help="Brief, one-line remark of the disease. Longer description will go on the Extra info field"),
+		'doctor' : fields.many2one('medical.physician','Physician', required=True, help="Physician who treated or diagnosed the patient"),
 		'diagnosed_date': fields.date ('Date of Diagnosis'),
 		'healed_date' : fields.date ('Healed'),
 		'is_active' : fields.boolean ('Active disease'),
@@ -642,7 +639,7 @@ class patient_disease_info (osv.osv):
 	_defaults = {
 		'is_active': lambda *a : True,
                 }
-
+	
 patient_disease_info ()
 
 # MEDICATION DOSAGE 
@@ -654,12 +651,10 @@ class medication_dosage (osv.osv):
 		'code': fields.char ('Code', size=64, help='Dosage Code, such as SNOMED, 229798009 = 3 times per day'),
 		'abbreviation' : fields.char  ('Abbreviation', size=64, help='Dosage abbreviation, such as tid in the US or tds in the UK'),
 		}
-
 medication_dosage ()
 
 # MEDICATION TEMPLATE
 # TEMPLATE USED IN MEDICATION AND PRESCRIPTION ORDERS
-
 class medication_template (osv.osv):
 
 	_name = "medical.medication.template"
@@ -695,12 +690,7 @@ class medication_template (osv.osv):
 		'start_treatment' : fields.datetime ('Start of treatment'),
 		'end_treatment' : fields.datetime ('End of treatment'),
 		}
-
-
 medication_template ()		
-
-
-
 
 # PATIENT MEDICATION TREATMENT
 class patient_medication (osv.osv):
@@ -727,13 +717,9 @@ class patient_medication (osv.osv):
                 'duration_period': lambda *a: 'days',
                 'qty': lambda *a: 1,                                                              
                 }
-	
 patient_medication ()
 
-
-
 # PATIENT EVALUATION
-
 class patient_evaluation (osv.osv):
 
 # Kludge to get patient ID when using one2many fields.
@@ -941,14 +927,9 @@ class patient_evaluation (osv.osv):
 	def onchange_loc (self, cr, uid, ids, loc_motor, loc_eyes, loc_verbal):
 		v = {'loc':loc_motor + loc_eyes + loc_verbal}
 		return {'value': v}	
-
-
-
 patient_evaluation ()
 
-
 # PATIENT DIRECTIONS (to be used also in surgeries if using standards like ICD10-PCS)
-
 class directions (osv.osv):
 	_name = "medical.directions"
 	_columns = {
@@ -956,15 +937,9 @@ class directions (osv.osv):
 		'procedure' : fields.many2one ('medical.procedure', 'Procedure'),
 		'comments' : fields.char ('Comments', size=128),
 		}
-
 directions ()
 
-
-
-
-
 # PRESCRIPTION ORDER
-
 class patient_prescription_order (osv.osv):
 
 	_name = "medical.prescription.order"
@@ -986,10 +961,7 @@ class patient_prescription_order (osv.osv):
 		'user_id': lambda obj, cr, uid, context: uid,		
 		'prescription_id': lambda obj, cr, uid, context: obj.pool.get('ir.sequence').get(cr, uid, 'medical.prescription'),
                 }
-
-
 patient_prescription_order ()
-
 		
 # PRESCRIPTION LINE
 class prescription_line (osv.osv):
@@ -1013,13 +985,9 @@ class prescription_line (osv.osv):
                 'quantity' : lambda *a: 1,
                 'prnt': lambda *a: True,                               
                 }
-		
 prescription_line ()
 
-
-
 # PATIENT VACCINATION INFORMATION
-
 class vaccination (osv.osv):
 	def _check_vaccine_expiration_date(self,cr,uid,ids):
 		vaccine=self.browse(cr,uid,ids[0])
@@ -1038,14 +1006,14 @@ class vaccination (osv.osv):
 
 	_name = "medical.vaccination"
 	_columns = {
-		'name' : fields.many2one ('medical.patient','Patient ID', readonly=True),
+		'name' : fields.many2one ('medical.patient','Patient ID'),
 		'vaccine' : fields.many2one ('product.product','Name', domain=[('is_vaccine', '=', "1")], help="Vaccine Name. Make sure that the vaccine (product) has all the proper information at product level. Information such as provider, supplier code, tracking number, etc.. This information must always be present. If available, please copy / scan the vaccine leaflet and attach it to this record"),
 		'vaccine_expiration_date' : fields.date ('Expiration date'),
 		'vaccine_lot' : fields.char ('Lot Number',size=128,help="Please check on the vaccine (product) production lot number and tracking number when available !"),
 		'institution' : fields.many2one ('res.partner','Institution', domain=[('is_institution', '=', "1")],help="Medical Center where the patient is being or was vaccinated"),
 		'date' : fields.datetime ('Date'),
 		'dose' : fields.integer ('Dose Number'),
-		'observations' : fields.char ('Observations', size=128),
+		'observations' : fields.text('Observations'),
 		}
 	_defaults = {
                 'dose': lambda *a: 1,
@@ -1058,14 +1026,9 @@ class vaccination (osv.osv):
         _sql_constraints = [
                 ('dose_unique', 'unique (name,dose,vaccine)', 'This vaccine dose has been given already to the patient ')
                 ]
-
-
 vaccination ()
 
-
 # HEALTH CENTER / HOSPITAL INFRASTRUCTURE
-
-
 class hospital_building (osv.osv):
 	_name = "medical.hospital.building"
 	_columns = {
