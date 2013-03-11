@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <openerp>
         <data>
-		<menuitem name="Medical" id="medical_menu" icon="STOCK_ZOOM_IN"/>
+		<menuitem name="Medical" id="medical_menu" web_icon="images/medical.png" web_icon_hover="images/medicalhover.png"/>
 		<menuitem name="Appointments" id="medical_appointment_menu" parent="medical_menu" sequence="1"/>
 		<menuitem name="Patients" id="medical_patients_menu" parent="medical_menu" sequence="2"/>
 		<menuitem name="Configuration" id="medical_conf_menu" parent="medical_menu" sequence="11"/>
@@ -601,12 +601,12 @@
 					<page string="General">
 						<group col="6">
 							<group colspan="6">
-			               		<field name="name"></field>
+			               		<field name="name" required="True"></field>
 			               		<field name="place_depilation"></field>
 								<field name="date"></field>
 		                    	<field name="number_session"></field>
 		                    	<field name="energy"></field>
-		                    	<field name="doctor"></field>
+		                    	<field name="doctor" required="True"></field>
 	                    	</group>
 	                    	<group colspan="6">
 		                    	<separator string="Extra Info"/>
@@ -614,6 +614,8 @@
 		                    	<field name="notes" nolabel="1"/>
                     		</group>
                     	</group>
+                    	<newline></newline>
+						<button name="action_makeAppointment" type="object" string="Schedule next session" icon="gtk-redo" />
                     </page>
                     <page string="Before">
 						<separator string="Before session"/>
@@ -1153,12 +1155,294 @@
 <!-- PATIENT Evaluations -->
 			        <page string="Evaluations">
 				        <separator string="Evaluations" colspan="6"/>
-				        <field name="evaluation_ids" colspan="4" nolabel="1" widget="one2many_list"/>
+				        <field name="evaluation_ids" colspan="4" nolabel="1" widget="one2many_list">
+				        	<form string="Patient">
+								<notebook>
+				<!-- General info -->
+									<page string="Main Info">
+										<group col="6">
+											<!-- <field name="name" string="Patient" required="False"/> -->
+											<field name="doctor"></field>
+											<field name="evaluation_date" required="1" />
+											<field name="next_evaluation_date"></field>
+											<field name="evaluation_type"></field>
+											<field name="chief_complaint" required="1"/>
+											<field name="derived_from"/>
+											<field name="derived_to"/>
+											<newline/>
+											<separator string="Evaluation Summary" colspan="6"/>
+											<field name="notes_complaint" nolabel="1" colspan="6"/>
+										</group>
+										<newline/>
+										<button name="action_makeAppointment" type="object" string="Schedule next Evaluation" icon="gtk-redo" />
+									</page>
+				<!-- Signs -->
+									<page string="Signs">
+										<notebook>
+					<!-- Vital signs -->
+											<page string="Generals">
+												<group col="6">
+													<group colspan="6" col="6">
+														<separator colspan="6" string="Vital Signs"/>
+														<field name="temperature"/>
+														<field name="systolic"/>
+														<field name="diastolic"/>
+														<field name="bpm"/>
+														<field name="respiratory_rate"/>
+														<field name="osat"/>
+													</group>
+													<newline/>
+													<group col="6">
+														<group colspan="2" col="4" >
+															<separator colspan="4" string="Nutrition Signs"/>
+															<field name="malnutrition"/>
+															<field name="dehydration"/>
+														</group>
+														<group col="2" colspan="4">
+															<separator colspan="4" string="Glucose Signs"/>
+															<field name="glycemia"/>
+															<field name="hba1c"/>
+														</group>
+													</group>
+													<newline/>
+													<group colspan="6" col="6">
+														<separator colspan="6" string="Anthropometry Signs"/>
+														<field name="weight" on_change="onchange_height_weight(height,weight)"/>
+														<field name="height" on_change="onchange_height_weight(height,weight)"/>
+														<field name="abdominal_circ"/>
+														<field name="head_circumference"/>
+														<field name="bmi"/>
+													</group>
+												</group>
+												<group colspan="6">
+													<group col="8">
+														<separator colspan="8" string="Lipids Signs"/>						
+														<field name="cholesterol_total"/>
+														<field name="hdl"/>
+														<field name="ldl"/>
+														<field name="tag"/>
+													</group>
+												</group>
+											</page>
+								<!-- Other signs -->
+											<page string="Others">
+												<group col="8">
+													<separator colspan="8" string="Other Signs"/>
+													<field name="edema"/>
+													<field name="cyanosis"/>
+													<field name="petechiae"/>
+													<field name="hematoma"/>
+													<field name="acropachy"/>
+													<field name="nystagmus"/>
+													<field name="miosis"/>
+													<field name="mydriasis"/>
+													<field name="cough"/>
+													<field name="palpebral_ptosis"/>
+													<field name="arritmia"/>
+													<field name="heart_murmurs"/>
+													<field name="heart_extra_sounds"/>
+													<field name="jugular_engorgement"/>
+													<field name="ascites"/>
+													<field name="lung_adventitious_sounds"/>
+													<field name="bronchophony"/>
+													<field name="increased_fremitus"/>
+													<field name="decreased_fremitus"/>
+													<field name="jaundice"/>
+													<field name="lynphadenitis"/>
+													<field name="breast_lump"/>
+													<field name="breast_asymmetry"/>
+													<field name="nipple_inversion"/>
+													<field name="nipple_discharge"/>
+													<field name="peau_dorange"/>
+													<field name="gynecomastia"/>
+													<field name="hypotonia"/>
+													<field name="hypertonia"/>
+													<field name="masses"/>
+													<field name="pressure_ulcers"/>
+													<field name="goiter"/>
+													<field name="alopecia"/>
+													<field name="xerosis"/>
+													<field name="erithema"/>
+												</group>
+											</page>				
+										</notebook>						
+									</page>
+				<!-- Symptoms -->
+									<page string="Symptoms">
+										<group col = "6" colspan="6">
+											<group col = "4" colspan="6">
+												<!-- <separator colspan="6" string="Pain"/>  -->
+												<field name="symptom_pain" colspan="2"/>
+												<field name="symptom_pain_intensity" colspan="2"/>
+											</group>
+											<newline/>
+											<group col = "12">
+												<separator colspan="12" string="Others"/>
+												<field name="symptom_arthralgia"/>
+												<field name="symptom_myalgia"/>
+												<field name="symptom_abdominal_pain"/>
+												<field name="symptom_cervical_pain"/>
+												<field name="symptom_thoracic_pain"/>
+												<field name="symptom_lumbar_pain"/>
+												<field name="symptom_pelvic_pain"/>
+												<field name="symptom_headache"/>
+												<field name="symptom_hoarseness"/>
+												<field name="symptom_odynophagia"/>
+												<field name="symptom_sore_throat"/>
+												<field name="symptom_otalgia"/>
+												<field name="symptom_ear_discharge"/>
+												<field name="symptom_chest_pain"/>
+												<field name="symptom_chest_pain_excercise"/>
+												<field name="symptom_orthostatic_hypotension"/>
+												<field name="symptom_astenia"/>
+												<field name="symptom_anorexia"/>
+												<field name="symptom_weight_change"/>
+												<field name="symptom_abdominal_distension"/>
+												<field name="symptom_hemoptysis"/>
+												<field name="symptom_hematemesis"/>
+												<field name="symptom_epistaxis"/>
+												<field name="symptom_gingival_bleeding"/>
+												<field name="symptom_rinorrhea"/>
+												<field name="symptom_nausea"/>
+												<field name="symptom_vomiting"/>
+												<field name="symptom_dysphagia"/>
+												<field name="symptom_polydipsia"/>
+												<field name="symptom_polyphagia"/>
+												<field name="symptom_polyuria"/>
+												<field name="symptom_nocturia"/>
+												<field name="symptom_vesical_tenesmus"/>
+												<field name="symptom_pollakiuria"/>
+												<field name="symptom_dysuria"/>
+												<field name="symptom_mood_swings"/>
+												<field name="symptom_stress"/>
+												<field name="symptom_pruritus"/>
+												<field name="symptom_insomnia"/>
+												<field name="symptom_disturb_sleep"/>
+												<field name="symptom_dyspnea"/>
+												<field name="symptom_orthopnea"/>
+												<field name="symptom_amnesia"/>
+												<field name="symptom_paresthesia"/>
+												<field name="symptom_paralysis"/>
+												<field name="symptom_dizziness"/>
+												<field name="symptom_vertigo"/>
+												<field name="symptom_tinnitus"/>
+												<field name="symptom_syncope"/>
+												<field name="symptom_eye_glasses"/>
+												<field name="symptom_blurry_vision"/>
+												<field name="symptom_diplopia"/>
+												<field name="symptom_photophobia"/>
+												<field name="symptom_dysmenorrhea"/>
+												<field name="symptom_amenorrhea"/>
+												<field name="symptom_metrorrhagia"/>
+												<field name="symptom_menorrhagia"/>
+												<field name="symptom_vaginal_discharge"/>
+												<field name="symptom_urethral_discharge"/>
+												<field name="symptom_diarrhea"/>
+												<field name="symptom_constipation"/>
+												<field name="symptom_rectal_tenesmus"/>
+												<field name="symptom_melena"/>
+												<field name="symptom_proctorrhagia"/>
+												<field name="symptom_xerostomia"/>
+												<field name="symptom_sexual_dysfunction"/>
+											</group>
+										</group>
+									</page>
+				<!-- Mental Status -->
+									<page string="Mental Status">
+										<group col = "4">
+											<group col = "4" colspan="4">
+												<separator colspan="4" string="Glasgow Coma Scale"/>
+												<field name="loc"/>
+												<field name="loc_eyes" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
+												<field name="loc_verbal" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
+												<field name="loc_motor" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
+											</group>
+											<newline/>
+											<group col = "4" colspan="4">
+												<separator colspan="4" string="Mental Assessment and Impairments"/>
+												<field name="mood" colspan="4"/>
+												<field name="violent"/>
+												<field name="orientation"/>
+												<field name="memory"/>
+												<field name="knowledge_current_events"/>
+												<field name="judgment"/>
+												<field name="abstraction"/>
+												<field name="vocabulary"/>
+												<field name="calculation_ability"/>
+												<field name="object_recognition"/>
+												<field name="praxis"/>
+											</group>
+										</group>
+									</page>
+				<!-- Mental Status -->
+									<page string="Diagnosis">
+										<group col = "6" colspan="6">
+											<separator colspan="6" string="Diagnosis"/>
+											<field name="diagnosis" colspan="6"/>
+											<newline/>
+											<group col="4" colspan="6">
+												<group colspan="2">
+													<separator string="Information on Diagnosis"/>
+													<newline/>
+													<field name="info_diagnosis" nolabel="1"/>
+												</group>
+												<group colspan="2">
+													<separator string="Treatment Plan"/>
+													<newline/>
+													<field name="directions" nolabel="1"/>
+												</group>
+											</group>
+											<newline/>
+											<separator string="Procedures" colspan="6"/>
+											<field name="actions" nolabel="1" colspan="6"  widget="many2many"/>
+											<newline/>
+										</group>		
+									</page>
+								</notebook>
+							</form>
+				        </field>
 			        </page>
 <!-- PATIENT Depilation -->
 			        <page string="Depilations">
 				        <separator string="Depilations" colspan="6"/>
-				        <field name="depilations_ids" colspan="4" nolabel="1" widget="one2many_list"/>
+				        <field name="depilations_ids" colspan="4" nolabel="1" widget="one2many_list">
+				        	<form string="Depilation Info">
+								<notebook>
+									<page string="General">
+										<group col="6">
+											<group colspan="6">
+							               		<field name="place_depilation"></field>
+												<field name="date"></field>
+						                    	<field name="number_session"></field>
+						                    	<field name="energy"></field>
+						                    	<field name="doctor" required="True"></field>
+					                    	</group>
+					                    	<group colspan="6">
+						                    	<separator string="Extra Info"/>
+												<newline/>
+						                    	<field name="notes" nolabel="1"/>
+				                    		</group>
+				                    	</group>
+				                    	<newline></newline>
+										<button name="action_makeAppointment" type="object" string="Schedule next session" icon="gtk-redo" />
+				                    </page>
+				                    <page string="Before">
+										<separator string="Before session"/>
+										<newline/>
+										<field name="bf_photo1"  nolabel="1" img_width="250" img_height="250" width="250" height="250" widget="image"/>	
+										<field name="bf_photo2"  nolabel="1" img_width="250" img_height="250" width="250" height="250" widget="image"/>	
+										<field name="bf_photo3"  nolabel="1" img_width="250" img_height="250" width="250" height="250" widget="image"/>	
+									</page>
+									<page string="After">
+										<separator string="After session"/>
+										<newline/>
+										<field name="af_photo1"  nolabel="1" img_width="250" img_height="250" width="250" height="250" widget="image"/>	
+										<field name="af_photo2"  nolabel="1" img_width="250" img_height="250" width="250" height="250" widget="image"/>	
+										<field name="af_photo3"  nolabel="1" img_width="250" img_height="250" width="250" height="250" widget="image"/>	
+									</page>
+								</notebook>
+							</form>
+				        </field>
 			        </page>
 <!-- Patient Extra Information -->
 					<page string="Extra Info">
@@ -1190,7 +1474,7 @@
 	</record>
 
 
-	<record model="ir.actions.act_window" id="medical_patient_action_form">
+	<!-- <record model="ir.actions.act_window" id="medical_patient_action_form">
 		<field name="name">New Patient</field>
 		<field name="type">ir.actions.act_window</field>
 		<field name="res_model">medical.patient</field>
@@ -1198,7 +1482,7 @@
 		<field name="view_id" ref="medical_patient_view"/>
 	</record>
 
-	<menuitem action="medical_patient_action_form"  parent="medical_patients_menu" id="medical_add_patient" sequence="1"/>
+	<menuitem action="medical_patient_action_form"  parent="medical_patients_menu" id="medical_add_patient" sequence="1"/> -->
 
 	<record model="ir.actions.act_window" id="medical_patient_action_tree">
 		<field name="name">Patients</field>
@@ -1536,113 +1820,126 @@
 		<field name="arch" type="xml">
 			<form string="Patient">
 				<notebook>
+<!-- General info -->
 					<page string="Main Info">
-						<field name="name" readonly="1" string="Patient"></field>
-						<field name="evaluation_type"></field>
-						<newline/>
-						<field name="evaluation_date" required="1" on_change="onchange_evaluation_date(name, parent.id)" domain="[('patient', '=', name)]"></field>
-						<field name="evaluation_endtime"></field>
-						<newline/>
-						<field name="chief_complaint" required="1"/>
-						<field name="derived_from"/>
-						<newline/>
-						<separator string="Evaluation Summary" colspan="4"/>
-						<field name="notes_complaint" nolabel="1" colspan="4"/>
-						<newline/>
-					</page>
-
-					<page string="Signs">
-
-						<group colspan="4" string="Vital Signs">
-							<field name="temperature"/>
-							<field name="systolic"/>
-							<field name="diastolic"/>
-							<field name="bpm"/>
-							<field name="respiratory_rate"/>
-							<field name="osat"/>
-						</group>
-
-						<newline/>
-						<group colspan="4" string="Nutrition">
-							<field name="malnutrition"/>
-							<field name="dehydration"/>
-						</group>
-
-						<newline/>
-						<group colspan="4" string="Anthropometry">
-							<field name="weight" on_change="onchange_height_weight(height,weight)"/>
-							<field name="height" on_change="onchange_height_weight(height,weight)"/>
-							<field name="abdominal_circ"/>
-							<field name="head_circumference"/>
+						<group col="6">
+							<field name="name" string="Patient" required="True"/>
+							<field name="doctor" required="1"/>
+							<field name="evaluation_date" required="1" />
+							<field name="next_evaluation_date"/>
+							<field name="evaluation_type"></field>
+							<field name="chief_complaint" required="1"/>
+							<field name="derived_from"/>
+							<field name="derived_to"/>
 							<newline/>
-							<field name="bmi"/>
-						</group>
-
-						<newline/>
-						<group colspan="2">
-							<field name="edema"/>
-							<field name="cyanosis"/>
-							<field name="petechiae"/>
-							<field name="hematoma"/>
-							<field name="acropachy"/>
-							<field name="nystagmus"/>
-							<field name="miosis"/>
-							<field name="mydriasis"/>
-							<field name="cough"/>
-							<field name="palpebral_ptosis"/>
-							<field name="arritmia"/>
-							<field name="heart_murmurs"/>
-							<field name="heart_extra_sounds"/>
-							<field name="jugular_engorgement"/>
-							<field name="ascites"/>
-							<field name="lung_adventitious_sounds"/>
-							<field name="bronchophony"/>
-						</group>
-						<group colspan="2">
-
-							<field name="increased_fremitus"/>
-							<field name="decreased_fremitus"/>
-							<field name="jaundice"/>
-							<field name="lynphadenitis"/>
-							<field name="breast_lump"/>
-							<field name="breast_asymmetry"/>
-							<field name="nipple_inversion"/>
-							<field name="nipple_discharge"/>
-							<field name="peau_dorange"/>
-							<field name="gynecomastia"/>
-							<field name="hypotonia"/>
-							<field name="hypertonia"/>
-							<field name="masses"/>
-							<field name="pressure_ulcers"/>
-							<field name="goiter"/>
-							<field name="alopecia"/>
-							<field name="xerosis"/>
-							<field name="erithema"/>
-
+							<separator string="Evaluation Summary" colspan="6"/>
+							<field name="notes_complaint" nolabel="1" colspan="6"/>
 						</group>
 						<newline/>
-						<group colspan="2" string="Glucose">
-							<field name="glycemia"/>
-							<field name="hba1c"/>
-						</group>
-
-						<group colspan="2" string="Lipids">
-							<field name="cholesterol_total"/>
-							<field name="hdl"/>
-							<field name="ldl"/>
-							<field name="tag"/>
-						</group>
+						<button name="action_makeAppointment" type="object" string="Schedule next Evaluation" icon="gtk-redo" />
 					</page>
-
-
+<!-- Signs -->
+					<page string="Signs">
+						<notebook>
+	<!-- Vital signs -->
+							<page string="Generals">
+								<group col="6">
+									<group colspan="6" col="6">
+										<separator colspan="6" string="Vital Signs"/>
+										<field name="temperature"/>
+										<field name="systolic"/>
+										<field name="diastolic"/>
+										<field name="bpm"/>
+										<field name="respiratory_rate"/>
+										<field name="osat"/>
+									</group>
+									<newline/>
+									<group col="6">
+										<group colspan="2" col="4" >
+											<separator colspan="4" string="Nutrition Signs"/>
+											<field name="malnutrition"/>
+											<field name="dehydration"/>
+										</group>
+										<group col="2" colspan="4">
+											<separator colspan="4" string="Glucose Signs"/>
+											<field name="glycemia"/>
+											<field name="hba1c"/>
+										</group>
+									</group>
+									<newline/>
+									<group colspan="6" col="6">
+										<separator colspan="6" string="Anthropometry Signs"/>
+										<field name="weight" on_change="onchange_height_weight(height,weight)"/>
+										<field name="height" on_change="onchange_height_weight(height,weight)"/>
+										<field name="abdominal_circ"/>
+										<field name="head_circumference"/>
+										<field name="bmi"/>
+									</group>
+								</group>
+								<group colspan="6">
+									<group col="8">
+										<separator colspan="8" string="Lipids Signs"/>						
+										<field name="cholesterol_total"/>
+										<field name="hdl"/>
+										<field name="ldl"/>
+										<field name="tag"/>
+									</group>
+								</group>
+							</page>
+				<!-- Other signs -->
+							<page string="Others">
+								<group col="8">
+									<separator colspan="8" string="Other Signs"/>
+									<field name="edema"/>
+									<field name="cyanosis"/>
+									<field name="petechiae"/>
+									<field name="hematoma"/>
+									<field name="acropachy"/>
+									<field name="nystagmus"/>
+									<field name="miosis"/>
+									<field name="mydriasis"/>
+									<field name="cough"/>
+									<field name="palpebral_ptosis"/>
+									<field name="arritmia"/>
+									<field name="heart_murmurs"/>
+									<field name="heart_extra_sounds"/>
+									<field name="jugular_engorgement"/>
+									<field name="ascites"/>
+									<field name="lung_adventitious_sounds"/>
+									<field name="bronchophony"/>
+									<field name="increased_fremitus"/>
+									<field name="decreased_fremitus"/>
+									<field name="jaundice"/>
+									<field name="lynphadenitis"/>
+									<field name="breast_lump"/>
+									<field name="breast_asymmetry"/>
+									<field name="nipple_inversion"/>
+									<field name="nipple_discharge"/>
+									<field name="peau_dorange"/>
+									<field name="gynecomastia"/>
+									<field name="hypotonia"/>
+									<field name="hypertonia"/>
+									<field name="masses"/>
+									<field name="pressure_ulcers"/>
+									<field name="goiter"/>
+									<field name="alopecia"/>
+									<field name="xerosis"/>
+									<field name="erithema"/>
+								</group>
+							</page>				
+						</notebook>						
+					</page>
+<!-- Symptoms -->
 					<page string="Symptoms">
-						<group colspan="4">
-							<group colspan="4" string="Pain">
-								<field name="symptom_pain"/>
-								<field name="symptom_pain_intensity"/>
+						<group col = "6" colspan="6">
+							<group col = "4" colspan="6">
+								<!-- <separator colspan="6" string="Pain"/>  -->
+								<field name="symptom_pain" colspan="2"/>
+								<field name="symptom_pain_intensity" colspan="2"/>
 							</group>
 							<newline/>
-							<group colspan="2">
+							<group col = "12">
+								<separator colspan="12" string="Others"/>
 								<field name="symptom_arthralgia"/>
 								<field name="symptom_myalgia"/>
 								<field name="symptom_abdominal_pain"/>
@@ -1678,9 +1975,6 @@
 								<field name="symptom_vesical_tenesmus"/>
 								<field name="symptom_pollakiuria"/>
 								<field name="symptom_dysuria"/>
-
-							</group>
-							<group colspan="2">
 								<field name="symptom_mood_swings"/>
 								<field name="symptom_stress"/>
 								<field name="symptom_pruritus"/>
@@ -1715,46 +2009,57 @@
 							</group>
 						</group>
 					</page>
+<!-- Mental Status -->
 					<page string="Mental Status">
-						<group string="Glasgow Coma Scale" colspan="4">
-							<field name="loc"/>
-							<field name="loc_eyes" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
-							<field name="loc_verbal" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
-							<field name="loc_motor" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
-						</group>
-						<newline/>
-						<group string="Mental Assessment and Impairments">
-							<field name="violent"/>
-							<field name="mood"/>
+						<group col = "4">
+							<group col = "4" colspan="4">
+								<separator colspan="4" string="Glasgow Coma Scale"/>
+								<field name="loc"/>
+								<field name="loc_eyes" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
+								<field name="loc_verbal" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
+								<field name="loc_motor" on_change="onchange_loc(loc_motor,loc_eyes,loc_verbal)"/>
+							</group>
 							<newline/>
-							<field name="orientation"/>
-							<field name="memory"/>
-							<field name="knowledge_current_events"/>
-							<field name="judgment"/>
-							<field name="abstraction"/>
-							<field name="vocabulary"/>
-							<field name="calculation_ability"/>
-							<field name="object_recognition"/>
-							<field name="praxis"/>
+							<group col = "4" colspan="4">
+								<separator colspan="4" string="Mental Assessment and Impairments"/>
+								<field name="mood" colspan="4"/>
+								<field name="violent"/>
+								<field name="orientation"/>
+								<field name="memory"/>
+								<field name="knowledge_current_events"/>
+								<field name="judgment"/>
+								<field name="abstraction"/>
+								<field name="vocabulary"/>
+								<field name="calculation_ability"/>
+								<field name="object_recognition"/>
+								<field name="praxis"/>
+							</group>
 						</group>
-
 					</page>
+<!-- Mental Status -->
 					<page string="Diagnosis">
-						<field name="diagnosis" colspan="4"/>
-						<newline/>
-						<separator string="Information on Diagnosis" colspan="4"/>
-						<field name="info_diagnosis" colspan="4" nolabel="1"/>
-						<separator string="Treatment Plan" colspan="4"/>
-						<field name="directions" nolabel="1" colspan="4"/>
-						<newline/>
-						<separator string="Procedures" colspan="4"/>
-						<field name="actions" nolabel="1" colspan="4"  widget="many2many"/>
-						<newline/>
-						<field name="user_id" string="Doctor user ID"></field>
-						<field name="next_evaluation" on_change="onchange_evaluation_date(name, parent.id)" domain="[('patient', '=', name)]"></field>
-						<field name="derived_to"></field>
+						<group col = "6" colspan="6">
+							<separator colspan="6" string="Diagnosis"/>
+							<field name="diagnosis" colspan="6"/>
+							<newline/>
+							<group col="4" colspan="6">
+								<group colspan="2">
+									<separator string="Information on Diagnosis"/>
+									<newline/>
+									<field name="info_diagnosis" nolabel="1"/>
+								</group>
+								<group colspan="2">
+									<separator string="Treatment Plan"/>
+									<newline/>
+									<field name="directions" nolabel="1"/>
+								</group>
+							</group>
+							<newline/>
+							<separator string="Procedures" colspan="6"/>
+							<field name="actions" nolabel="1" colspan="6"  widget="many2many"/>
+							<newline/>
+						</group>		
 					</page>
-
 				</notebook>
 			</form>
 		</field>
@@ -1768,30 +2073,56 @@
 		<field name="type">tree</field>
 		<field name="arch" type="xml">
 			<tree colors="red:bmi&lt;=18 or bmi&gt;=25" string='Evaluations'>
+				<field name="name"></field>
 				<field name="evaluation_date"></field>
+				<field name="doctor"></field>
 				<field name="chief_complaint"></field>
 				<field name="bmi"></field>
 				<field name="systolic"></field>
 				<field name="diastolic"></field>
 				<field name="diagnosis"></field>
-<!--
 				<field name="derived_from"></field>
 				<field name="derived_to"></field>
--->
-				<field name="next_evaluation"></field>
+				<field name="next_evaluation_date"></field>
+				<field name="evaluation_type"></field>
 			</tree>
 		</field>
 	</record>
 
+	<record id="view_medical_patient_evaluation_filter" model="ir.ui.view">
+		<field name="name">medical.patient_evaluation.select</field>
+		<field name="model">medical.patient.evaluation</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+			<search string="Search Evaluation">
+				<newline/>
+				<separator orientation="vertical"/>
+				    <field name="name"></field>
+	           		<field name="doctor"></field>
+	           		<field name="evaluation_date"></field>
+	           		<field name="evaluation_type"></field>
+				<newline/>
+				<group expand="0" string="Group By..." colspan="11" col="11" groups="base.group_extended">
+					<filter string="Doctor" icon="terp-personal" domain="[]" context="{'group_by':'doctor'}"/>
+					<filter string="Patients" icon="terp-personal" domain="[]" context="{'group_by':'name'}"/>
+					<filter string="Date" icon="terp-personal" domain="[]" context="{'group_by':'evaluation_date'}"/>
+				</group>
+			</search>
+		</field>
+	</record>
 
 	<record model="ir.actions.act_window" id="medical_action_form_evaluation">
-		<field name="name">Patient Evaluation</field>
+		<field name="name">Evaluations</field>
 		<field name="type">ir.actions.act_window</field>
 		<field name="res_model">medical.patient.evaluation</field>
 		<field name="view_type">form</field>
-		<field name="view_id" ref="medical_patient_evaluation_view"/>
+		<field name="view_id" ref="medical_patient_evaluation_tree"/>
 	</record>
 
+
+<!-- Menu entry, under Patients -->
+
+	<menuitem action="medical_action_form_evaluation" id="medical_patient_evaluations" parent="medical_patients_menu"/>
 
 
 <!-- Disease -->
@@ -2286,6 +2617,7 @@
 				<field name="prescription_id"></field>
 				<field name="name"></field>
 				<field name="user_id"></field>
+				<field name="user_id"></field>
 				<field name="prescription_date"></field>
 			</tree>
 		</field>
@@ -2299,16 +2631,21 @@
 		<field name="type">search</field>
 		<field name="arch" type="xml">
 			<search string="Search Patient Prescriptions">
-
 				<separator orientation="vertical"/>
 				    <field name="name" select="1"/>
 				    <field name="prescription_id" select="1"/>
 				    <field name="prescription_date" select="1"/>
 				    <field name="pharmacy" select="1"/>
+				    <newline/>
+	 				<group expand="0" string="Group By..." colspan="11" col="11" groups="base.group_extended">
+						<filter string="Doctor" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+						<filter string="Patients" icon="terp-personal" domain="[]" context="{'group_by':'name'}"/>
+						<filter string="Date" icon="terp-personal" domain="[]" context="{'group_by':'prescription_date'}"/>
+					</group>
+	
 			</search>
 		</field>
 	</record>
-
 
 <!-- Action to generate a new prescription -->
 
@@ -2406,7 +2743,7 @@
 <!-- Action to generate a new vaccine -->
 
 	<record model="ir.actions.act_window" id="medical_action_vaccinations">
-		<field name="name">Vaccinations</field>
+		<field name="name">Immunizations</field>
 		<field name="type">ir.actions.act_window</field>
 		<field name="res_model">medical.vaccination</field>
 		<field name="view_type">form</field>

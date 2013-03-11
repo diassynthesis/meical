@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+		<record id="df_security_groups_form_view" model="ir.ui.view">
+			<field name="name">df.security.group.form.view</field>			   			
+            <field name="model">df.security.group</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+	            <form string="Security Group">	
+	            	<group colspan="4">
+                		<field name="module_id" />
+                		<field name="new_group" />
+                	</group>
+                	<group colspan="4" attrs="{'invisible': [('new_group', '=', True)]}" >     
+                		<separator string="Generate security from existing group" colspan="4"/>           		
+                		<field name="group_id" />
+               			<field name="type" widget="selection" attrs="{'invisible': [('new_group', '=', True)]}" />
+               		</group>
+               		<group colspan="4" attrs="{'invisible': [('new_group', '=', True)]}" >
+                		<field name="state" invisible="1"/>	                           			
+            			<button name="genfromexitsgroups" type="object" string="Generate" colspan="1" attrs="{'readonly':['|',('group_id','=',False),('type','=',False)]}"/>
+            		</group>
+            		<group colspan="4" attrs="{'invisible': [('new_group', '=', False)]}">
+            			<separator string="Generate security with a new group" colspan="4"/>
+                		<field name="name" />
+                	</group>
+               		<group colspan="4" attrs="{'invisible': [('new_group', '=', False)]}" >
+               			<label string="Inherit groups:" colspan="2" />
+               			<label string="Authorized menu:" colspan="2" />
+          		    	<field name="groups_inherits" nolabel="1" colspan="2" options='{"selectable": true,"deletable":true}'/>
+          		    	<field name="menus_ids" nolabel="1" colspan="2"/>
+          		    </group>
+          		    <group colspan="4" attrs="{'invisible': [('new_group', '=', False)]}">
+            			<button name="generatenewgroup" type="object" string="Generate" colspan="1" attrs="{'readonly':[('name','=',False)]}"/>
+                	</group>
+	            </form>                            
+            </field>
+        </record>	
+        
+        <record id="df_security_groups_action_form" model="ir.actions.act_window">
+            <field name="name">Security Acess Right Generator</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">df.security.group</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="df_security_groups_form_view"/>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem action="df_security_groups_action_form" id="menu_security_groups_action_form" parent="base.menu_security" sequence="10"/>
+
+    </data>
+</openerp>

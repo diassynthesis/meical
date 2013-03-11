@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+	<record model="res.groups" id="group_df_security">
+		<field name="name">Security Manager Own</field>		
+	</record>
+	<record model="ir.ui.menu" id="base.menu_ir_access_act">
+		<field name="groups_id" eval="[(4, ref('group_df_security'))]"/>
+	</record>
+	<record model="ir.ui.menu" id="base.menu_action_rule">
+		<field name="groups_id" eval="[(4, ref('group_df_security'))]"/>
+	</record>
+	<record model="ir.ui.menu" id="df_security.menu_security_groups_action_form">
+		<field name="groups_id" eval="[(4, ref('group_df_security'))]"/>
+	</record>
+</data>
+</openerp>

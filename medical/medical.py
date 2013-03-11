@@ -223,6 +223,42 @@ class patient_depilation (osv.osv):
 
 	_name = "medical.patient.depilation"
 	_description = "Patient depilation"
+	
+	def action_makeAppointment(self, cr, uid, ids, context=None):
+		"""
+        This opens Appointment's calendar view to schedule appointment on current evaluation
+        @return : Dictionary value for created Meeting view
+        """
+	        if context is None:
+	            context = {}
+	        value = {}
+	        data_obj = self.pool.get('ir.model.data')
+	        for opp in self.browse(cr, uid, ids, context=context):
+	            # Get meeting views
+	        	   tree_view = data_obj.get_object_reference(cr, uid, 'medical', 'medical_appointment_tree')
+	        	   form_view = data_obj.get_object_reference(cr, uid, 'medical', 'medical_appointment_view')
+	        	   calander_view = data_obj.get_object_reference(cr, uid, 'medical', 'view_medical_appointment')
+	        	   search_view = data_obj.get_object_reference(cr, uid, 'medical', 'view_medical_appointment_filter')
+	        	   context.update({
+	                'default_patient': opp.name and opp.name.id or False,
+	                'default_doctor': opp.doctor and opp.doctor.id or False,
+	                'default_speciality': opp.doctor.speciality and opp.doctor.speciality.id or False,
+	                'default_institution': opp.doctor.institution and opp.doctor.institution.id or False
+	            	   })
+	        	   value = {
+	                'name': _('Appointment'),
+	                'context': context,
+	                'view_type': 'form',
+	                'view_mode': 'calendar,form,tree',
+	                'res_model': 'medical.appointment',
+	                'view_id': False,
+	                'views': [(calander_view and calander_view[1] or False, 'calendar'), (form_view and form_view[1] or False, 'form'), (tree_view and tree_view[1] or False, 'tree')],
+	                'type': 'ir.actions.act_window',
+	                'search_view_id': search_view and search_view[1] or False,
+	                'nodestroy': True
+	            }
+	        return value
+	       
 	_columns = {
 		'name' : fields.many2one ('medical.patient','Patient ID'),
 		'doctor' : fields.many2one('medical.physician','Physician', help="Physician who prescribed the medicament"),
@@ -707,7 +743,7 @@ class patient_medication (osv.osv):
 		'discontinued_reason' : fields.char ('Reason for discontinuation', size=128, help="Short description for discontinuing the treatment"),
 		'adverse_reaction' : fields.text ('Adverse Reactions',help="Specific side effects or adverse reactions that the patient experienced"),
 		'notes' : fields.text ('Extra Info'),
-		'patient_id' : fields.many2one('medical.patient','Patient'),		
+#		'patient_id' : fields.many2one('medical.patient','Patient'),		
 		}
 
 	_defaults = {
@@ -727,16 +763,52 @@ class patient_evaluation (osv.osv):
 		if not name:
 #			pdb.set_trace()
 			return {'value': {'name': patient}}
-
+		
+	def action_makeAppointment(self, cr, uid, ids, context=None):
+		"""
+        This opens Appointment's calendar view to schedule appointment on current evaluation
+        @return : Dictionary value for created Meeting view
+        """
+	        if context is None:
+	            context = {}
+	        value = {}
+	        data_obj = self.pool.get('ir.model.data')
+	        for opp in self.browse(cr, uid, ids, context=context):
+	            # Get meeting views
+	        	   tree_view = data_obj.get_object_reference(cr, uid, 'medical', 'medical_appointment_tree')
+	        	   form_view = data_obj.get_object_reference(cr, uid, 'medical', 'medical_appointment_view')
+	        	   calander_view = data_obj.get_object_reference(cr, uid, 'medical', 'view_medical_appointment')
+	        	   search_view = data_obj.get_object_reference(cr, uid, 'medical', 'view_medical_appointment_filter')
+	        	   context.update({
+	                'default_patient': opp.name and opp.name.id or False,
+	                'default_doctor': opp.derived_to and opp.derived_to.id or False,
+	                'default_appointment_date': opp.next_evaluation_date,
+	                'default_speciality': opp.derived_to.speciality and opp.derived_to.speciality.id or False,
+	                'default_institution': opp.derived_to.institution and opp.derived_to.institution.id or False,
+	                'default_comments': opp.notes_complaint
+	            	   })
+	        	   value = {
+	                'name': _('Appointment'),
+	                'context': context,
+	                'view_type': 'form',
+	                'view_mode': 'calendar,form,tree',
+	                'res_model': 'medical.appointment',
+	                'view_id': False,
+	                'views': [(calander_view and calander_view[1] or False, 'calendar'), (form_view and form_view[1] or False, 'form'), (tree_view and tree_view[1] or False, 'tree')],
+	                'type': 'ir.actions.act_window',
+	                'search_view_id': search_view and search_view[1] or False,
+	                'nodestroy': True
+	            }
+	        return value
 
 	_name = "medical.patient.evaluation"
 	_description = "evaluation"
 	_columns = {
 		'name' : fields.many2one ('medical.patient','Patient ID'),
-                'evaluation_date' : fields.many2one ('medical.appointment','Evaluation Date', help="Enter or select the date / ID of the appointment related to this evaluation"),
-		'evaluation_endtime' : fields.datetime ('End of Evaluation'),
-		'next_evaluation' : fields.many2one ('medical.appointment','Next Appointment'),
-		'user_id' : fields.many2one ('res.users','Doctor', readonly=True),
+        'evaluation_date' : fields.datetime ('Evaluation Date'),
+        'next_evaluation_date' : fields.datetime ('Next Evaluation'),
+		
+		'doctor' : fields.many2one('medical.physician','Physician', help="Physician who prescribed the medicament"),
 		'derived_from' : fields.many2one('medical.physician','Derived from Doctor', help="Physician who escalated / derived the case"), 
 		'derived_to' : fields.many2one('medical.physician','Derived to Doctor', help="Physician to whom escalate / derive the case"), 
 		'evaluation_type' : fields.selection([
@@ -910,9 +982,7 @@ class patient_evaluation (osv.osv):
                 'loc_verbal': lambda *a: 5,
                 'loc_motor': lambda *a: 6,
 		'evaluation_type': lambda *a: 'pa',
-		'user_id': lambda obj, cr, uid, context: uid,
 		'name': lambda self, cr, uid, c: c.get('name', False),
-		
         }
 
 

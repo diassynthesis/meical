@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="df_design_form_view" model="ir.ui.view">
+            <field name="name">df_design_form</field>
+            <field name="model">df_design</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Generate graph" >
+                	<group colspan="1" col="6">
+                		<field name="module_id" required="1" colspan="6" />
+                		<field name="artifact" required="1" colspan="3" />
+                		<field name="image" colspan="3"/>
+                		<group colspan="3" col="6">
+	                		<field name="columns" string="Columns" widget="bool" attrs="{'invisible':[('artifact','!=',3)]}"/>
+	                		<field name="attributes" string="Attributes" widget="bool"  attrs="{'invisible':[('artifact','!=',3)]}"/>
+	                		<field name="methods" string="Methods" widget="bool"  attrs="{'invisible':[('artifact','!=',3)]}"/>
+                		</group>
+             			<field name="format" required="1"/>
+                		<button name="generate" type="object" string="Generate"/>
+                	</group>
+                </form>
+            </field>
+        </record>	
+        
+        <record id="df_design_action_form" model="ir.actions.act_window">
+            <field name="name">Design</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">df.design</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="df_design_form_view"/>
+            <field name="target">new</field>
+        </record>
+                
+        <menuitem action="df_design_action_form" id="df_menu_design_action_form" parent="base.menu_management" sequence="10"/>
+    </data>
+</openerp>

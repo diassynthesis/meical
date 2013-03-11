@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+		<record model="df.security.typegeneration" id="csv_id">
+          <field name="name">CSV Generation</field>          
+        </record>
+        <record model="df.security.typegeneration" id="database_id">
+          <field name="name">Data Base Generation</field>          
+        </record>		
+    </data>
+</openerp>

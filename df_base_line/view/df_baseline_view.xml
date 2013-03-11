@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	<!-- Adding the button "End task" to project work task tree -->   
+    	<record model="ir.ui.view" id="view_task_work_treeI">
+		    <field name="name">project.task.work.inherit</field>
+		    <!-- <field name="type">form</field> -->
+		    <field name="model">project.task</field>
+		    <field name="inherit_id" ref="project.view_task_form2"/>
+		    <field name="arch" type="xml">
+                <field colspan="4" name="work_ids" position="replace">
+	                <field colspan="4" name="work_ids" nolabel="1" attrs="{'readonly':[('state','in',['done','draft'])]}">
+                        <tree string="Task Work" editable="top" colors="green:state == 'done'">
+                            <field name="name" />
+                            <field name="hours" widget="float_time" sum="Spent Hours"/>
+                            <field name="user_id" />
+                            <field name="date" />
+                            <field name="state" invisible="True" />
+                            <button name="end_task_work" string="End task" colspan="1" type="object" icon="kanban-apply" attrs="{'invisible':[('state','=','done')]}"/>
+                            <field name="state" invisible="True"/>
+                        </tree>
+                    </field>
+				</field>
+		    </field>
+		</record>
+		
+	<!-- ** Base line ** -->
+	 	<!-- Form view -->
+        <record model="ir.ui.view" id="neos_base_line_form_view">
+            <field name="name">neos.baseline.form.view</field>
+            <field name="model">neos.baseline</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Base line" >
+                	<field name="name"/>
+                    <field name="code"/>
+                    <field name="version"/>
+                    <field name="date_start" required="True"/>
+                    <field name="method_id"/>
+                    <field name="setup_id"/>
+                	<notebook colspan="4">
+                        <page string="Detail lines"> 
+	                        <group colspan="4" >
+	                            <field colspan="4" name="baseline_details_lines" nolabel="1">
+		                            <tree editable="bottom" string="Detail lines" colors="blue:state == 'progress'">
+		                            	<field name="name"/>
+		                            	<field name="code"/>
+		                                <field name="priority"/>
+		                                <field name="precedent"/>
+		                                <field name="after_with"/>
+		                                <field name="process_area_id" />
+		                                <field name="functional_group_id"/>
+		                                <field name="functional_scenario_id"/>
+		                                <field name="state" invisible="True"/>
+		                            </tree>
+		                            <form string="Detail lines">
+		                            	<field name="name"/>
+		                            	<field name="code"/>
+		                                <field name="precedent"/>
+		                                <field name="priority"/>
+		                                <field name="process_area_id" />
+		                                <field name="functional_group_id"/>
+		                                <field name="functional_scenario_id"/>
+		                            </form>
+	                    		</field>
+		                	</group>            
+                        </page>
+                        <page string="Description">
+                    		<field name="description" nolabel = '1'/>            
+                        </page>
+	                </notebook>
+                </form>
+            </field>
+        </record>
+        <!-- Tree View -->
+	    <record model="ir.ui.view" id="neos_base_line_view_tree">
+	        <field name="name">neos.baseline.tree</field>
+	        <field name="model">neos.baseline</field>
+	        <field name="type">tree</field>
+	        <field name="arch" type="xml">
+	            <tree string="Base line" colors="blue:state == 'progress'">
+	                <field name="name"/>
+	                <field name="code"/>
+	                <field name="version"/>
+                    <field name="date_start"/>
+                    <field name="method_id"/>
+                    <field name="setup_id"/>
+					<field name="description"/>
+					<field name="state" invisible="True"/>
+	            </tree>
+	        </field>
+	    </record> 
+	    
+	    <record model="ir.actions.act_window" id="neos_base_line_action">
+	        <field name="name">Base line</field>
+	        <field name="res_model">neos.baseline</field>
+	        <field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+    	</record>
+    	
+<!-- Methods -->
+	 	<!-- Form view -->
+        <record model="ir.ui.view" id="neos_method_form_view">
+            <field name="name">neos.method.form.view</field>
+            <field name="model">neos.method</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Method" >
+                    <group colspan="4" >
+                		<field name="name"/>
+                        <field name="code"/>
+                        <notebook colspan="4">
+                        	<page string="Tasks">
+	                        	<field name="tasks_ids" colspan="4" nolabel="1" widget="many2many"/>
+                        	</page>
+                        	<page string="Description">
+                    			<field name="description" nolabel = '1'/>
+	                        </page>
+                        </notebook>
+	                </group>
+                </form>
+            </field>
+        </record>
+        <!-- Tree View -->
+	    <record model="ir.ui.view" id="neos_method_view_tree">
+	        <field name="name">neos.method.tree.view</field>
+	        <field name="model">neos.method</field>
+	        <field name="type">tree</field>
+	        <field name="arch" type="xml">
+	            <tree string="Method">
+	                <field name="name"/>
+	                <field name="code"/>
+					<field name="description"/>
+	            </tree>
+	        </field>
+	    </record> 
+	    <!-- The action --> 
+	    <record model="ir.actions.act_window" id="neos_method_action">
+	        <field name="name">Method</field>
+	        <field name="res_model">neos.method</field>
+	        <field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+    	</record>
+<!-- Tasks -->
+	 	<!-- Form view -->
+        <record model="ir.ui.view" id="neos_tasks_form_view">
+            <field name="name">neos.tasks.form.view</field>
+            <field name="model">neos.tasks</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Tasks" >
+                    <group colspan="4" >
+                		<field name="name"/>
+                        <field name="code"/>
+                        <field name="stage_id" widget="many2one" required="True"/>
+                        <notebook colspan="4">
+	                    <page string="Hours per complexity level">
+	                        <field name="complex_verylow"/>
+	                        <field name="complex_low"/>
+	                        <field name="complex_medium"/>
+	                        <field name="complex_important"/>
+	                        <field name="complex_veryimportant"/>
+	            		</page>
+                        <page string="Description">
+                    		<field name="description" nolabel = '1'/>            
+                        </page>
+	           		 	</notebook>   
+	                </group>
+                </form>
+            </field>
+        </record>
+        <!-- Tree View -->
+	    <record model="ir.ui.view" id="neos_tasks_view_tree">
+	        <field name="name">neos.tasks.tree</field>
+	        <field name="model">neos.tasks</field>
+	        <field name="type">tree</field>
+	        <field name="arch" type="xml">
+	            <tree string="Tasks">
+	                <field name="name"/>
+	                <field name="code"/>
+                    <field name="complex_verylow"/>
+                    <field name="complex_low"/>
+                    <field name="complex_medium"/>
+                    <field name="complex_important"/>
+                    <field name="complex_veryimportant"/>
+					<field name="description"/>
+	            </tree>
+	        </field>
+	    </record> 
+	    
+	    <record model="ir.actions.act_window" id="neos_tasks_action">
+	        <field name="name">Task</field>
+	        <field name="res_model">neos.tasks</field>
+	        <field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+    	</record>
+<!-- Iteration view implementation -->
+	<!-- Form view -->
+	<record model="ir.ui.view" id="neos_iteration_form_view">
+	    <field name="name">neos.iteration.form.view</field>
+	    <field name="model">neos.iteration</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">
+	        <form string="Iterations" >
+	            <group colspan="4" >
+	            
+        		<field name="name" required="True"/>
+                <field name="code" required="True"/>
+                <field name="baseline_id" required="True"/>
+                    <notebook colspan="4">
+	                    <page string="Base line detail lines">
+		                    <field name="baselinedetails_ids" colspan="4" nolabel = '1' widget="many2many" domain="[('iteration_id','=',None),('baseline_id','=',baseline_id)]"/>
+	            		</page>
+                        <page string="Description">
+                    		<field name="description" nolabel = '1'/>            
+                        </page>
+	           		 </notebook>    
+	            </group>
+	        </form>
+	    </field>
+	</record>
+	<!-- Tree View -->
+    <record model="ir.ui.view" id="neos_iteration_view_tree">
+        <field name="name">neos.iteration.tree</field>
+        <field name="model">neos.iteration</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Iteration" colors="blue:state == 'progress'">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="baseline_id"/>
+                <field name="functional_scenaro_id"/>
+                <field name="baselinedetails_ids"/>
+                <field name="description"/>
+                 <field name="state" invisible="True"/>
+            </tree>
+        </field>
+    </record>
+    <!-- The action -->
+    <record model="ir.actions.act_window" id="neos_iteration_action">
+        <field name="name">Iterations</field>
+        <field name="res_model">neos.iteration</field>
+        <field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+<!-- END Iteration view implementation -->
+
+<!-- Stage view implementation -->
+	<!-- The form view -->
+	<record model="ir.ui.view" id="neos_stage_form_view">
+	    <field name="name">neos.stage.form.view</field>
+	    <field name="model">neos.stage</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">
+	        <form string="Stages" >
+        		<field name="name"/>
+        		<field name="sequence"/>
+        		<group colspan="4">
+		            <separator string="Description" colspan="4"></separator>
+		            <field name="description" nolabel = '1' colspan="4"/>
+           		</group>
+	        </form>
+	    </field>
+	</record>
+	<!-- The tree View -->
+    <record model="ir.ui.view" id="neos_stage_tree_view">
+        <field name="name">neos.stage.tree</field>
+        <field name="model">neos.stage</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Stages">
+                <field name="name"/>
+                <field name="sequence"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+     <!-- The action -->
+    <record model="ir.actions.act_window" id="neos_stage_action">
+        <field name="name">Stages</field>
+        <field name="res_model">neos.stage</field>
+        <field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+<!-- END Stage view implementation -->
+<!-- Working days Set-UP view implementation -->
+	<!-- The form view -->
+	<record model="ir.ui.view" id="df_bl_workingdays_form_view">
+	    <field name="name">df.bl.workingdays.form.view</field>
+	    <field name="model">df.bl.workingdays</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">
+	        <form string="Working days Set-up" >
+        		<field name="name"/>
+ 	       		<field name="code"/>
+ 	       		<field name="hours_per_normal_day" required="True"/>
+ 	       		<newline></newline>
+ 	       		<group colspan="2" col="2">
+ 	       			<separator string="Set-up type selection" colspan="4"></separator>
+	 	       		<field name="normal_setup" colspan="2" on_change="onchange_normal_setup(normal_setup,special_setup)"/>
+	 	       		<field name="special_setup" colspan="2" on_change="onchange_special_setup(special_setup,normal_setup)"/>
+ 	       		</group>
+ 	       		<group colspan="2" col="2">
+ 	       			<separator string="Special Set-up" colspan="4"></separator>
+	 	       		<field name="nonconsecutive_saturdays" colspan="2" on_change="onchange_nonconsecutive_saturdays(nonconsecutive_saturdays,all_saturdays)" attrs="{'readonly': [('special_setup','!=',1)]}"/>
+	 	       		<field name="all_saturdays" colspan="2" on_change="onchange_all_saturdays(all_saturdays,nonconsecutive_saturdays)" attrs="{'readonly': [('special_setup','!=',1)]}"/>
+	 	       		<field name="hours_per_wk_day" colspan="2" attrs="{'readonly': [('special_setup','!=',1)]}"/>
+ 	       		</group>
+        		<group colspan="4">
+		            <separator string="Description" colspan="4"></separator>
+		            <field name="description" nolabel = '1' colspan="4"/>
+           		</group>
+	        </form>
+	    </field>
+	</record>
+	<!-- The tree View -->
+    <record model="ir.ui.view" id="df_bl_workingdays_tree_view">
+        <field name="name">df.bl.workingdays.tree</field>
+        <field name="model">df.bl.workingdays</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Working days Set-up">
+                <field name="name"/>
+ 	       		<field name="code"/>
+ 	       		<field name="hours_per_normal_day"/>
+ 	       		<field name="normal_setup"/>
+ 	       		<field name="special_setup"/>
+ 	       		<field name="nonconsecutive_saturdays"/>
+ 	       		<field name="all_saturdays"/>
+ 	       		<field name="hours_per_wk_day"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+     <!-- The action -->
+    <record model="ir.actions.act_window" id="df_bl_workingdays_action">
+        <field name="name">Working days</field>
+        <field name="res_model">df.bl.workingdays</field>
+        <field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+<!-- END Working days Set-UP view implementation -->
+<!-- Holidays Set-UP view implementation -->
+	<!-- The form view -->
+	<record model="ir.ui.view" id="df_bl_holidays_form_view">
+	    <field name="name">df.bl.holidays.form</field>
+	    <field name="model">df.bl.holidays</field>
+	    <field name="type">form</field>
+	    <field name="arch" type="xml">
+	        <form string="Holidays set up" >
+        		<field name="name"/>
+ 	       		<field name="date_start"/>
+ 	       		<field name="date_end"/>
+        		<group colspan="4">
+		            <separator string="Description" colspan="4"></separator>
+		            <field name="description" nolabel = '1' colspan="4"/>
+           		</group>
+	        </form>
+	    </field>
+	</record>
+	<!-- The tree View -->
+    <record model="ir.ui.view" id="df_bl_holidays_tree_view">
+        <field name="name">df.bl.holidays.tree</field>
+        <field name="model">df.bl.holidays</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Holidays set up">
+                <field name="name"/>
+ 	       		<field name="date_start"/>
+ 	       		<field name="date_end"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+     <!-- The action -->
+    <record model="ir.actions.act_window" id="df_bl_holidays_action">
+        <field name="name">Holidays</field>
+        <field name="res_model">df.bl.holidays</field>
+        <field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+<!-- END Holidays Set-UP view implementation -->
+
+        
+	<!-- General menu -->
+		<menuitem id="menu_base_line_parent_hrztal" name="Base line" sequence="0"/>
+		<menuitem id="menu_base_line_parent_left" parent="menu_base_line_parent_hrztal" name="Base line" sequence="0"/>
+		<menuitem action="neos_base_line_action" id="menu_base_line" parent="menu_base_line_parent_left" sequence="0"/>
+        <menuitem action="neos_iteration_action" id="menu_iterations" parent="menu_base_line_parent_left" sequence="1"/>
+		<menuitem id="menu_configuration_parent_left" parent="menu_base_line_parent_hrztal" name="Configuration" sequence="1"/>
+        <menuitem action="neos_stage_action" id="menu_stages" parent="menu_configuration_parent_left" sequence="0"/>
+        <menuitem action="neos_tasks_action" id="menu_tasks" parent="menu_configuration_parent_left" sequence="1"/>
+        <menuitem action="neos_method_action" id="menu_method" parent="menu_configuration_parent_left" sequence="2"/>
+        <menuitem action="df_bl_workingdays_action" id="menu_workingdays" parent="menu_configuration_parent_left" sequence="3"/>
+        <menuitem action="df_bl_holidays_action" id="menu_holidays" parent="menu_configuration_parent_left" sequence="4"/>
+        
+    </data>
+</openerp>

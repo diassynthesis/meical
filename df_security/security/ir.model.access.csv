@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_Security Manager_df_security_typegeneration,df_security_df_security_typegeneration,model_df_security_typegeneration,group_df_security,1,1,1,1
+access_Security Manager_df_security_group,df_security_df_security_group,model_df_security_group,group_df_security,1,1,1,1
+access_Security Manager_ir_module_module,base_ir_module_module,base.model_ir_module_module,group_df_security,1,0,0,0
+access_Security Manager_res_groups,base_res_groups,base.model_res_groups,group_df_security,1,0,0,0

@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 {
 
-	'name' : 'Medical : Free Health and Hospital Information System',  
+	'name' : 'Open-Medical',  
 	'version' : '1.0',
-	'author' : 'Thymbra',
-	'category' : 'Generic Modules/Others',
+	'author' : 'Eloquenti@ Solutions SA de CV',
+	'category' : 'Medical verticalization',
 	'depends' : ['base','sale','purchase','account','product'],
 	'description' : """
 
@@ -51,8 +51,9 @@ Medical at a glance:
 Most of the action should occur at sourceforge, so check the main page http://sourceforge.net/projects/medical for the latest news and developer releases. 
 
 """,
-	"website" : "http://medical.sourceforge.net",
+	"website" : "http://www.eloquentia.simart.dtdns.net/",
 	"init_xml" : [],
+	'images': ['images/medical.png'],
 	"demo_xml" : ["demo/medical_demo.xml"],
 # Use the following line for English
 
@@ -79,5 +80,6 @@ Most of the action should occur at sourceforge, so check the main page http://so
 
 
 #	"update_xml" : ["medical_view.xml"],
+	"application" : True,
 	"active": False 
 }
