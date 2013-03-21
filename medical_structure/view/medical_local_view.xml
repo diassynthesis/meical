@@ -4,9 +4,9 @@
 
 <!-- Local resource inherits -->
 		<!--  Form     -->
-		<record id="jaf_resource_local_form" model="ir.ui.view">
+		<record id="medical_resource_local_form" model="ir.ui.view">
             <field name="name">Locals</field>
-            <field name="model">jaf.resource.local</field>
+            <field name="model">medical.resource.local</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Edit Locals">
@@ -68,9 +68,9 @@
         </record>
 
 		<!--  Tree     -->
-        <record id="jaf_resource_local_list" model="ir.ui.view">
+        <record id="medical_resource_local_list" model="ir.ui.view">
             <field name="name">Locals</field>
-            <field name="model">jaf.resource.local</field>
+            <field name="model">medical.resource.local</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Locals">
@@ -86,9 +86,9 @@
         
 
         <!-- Search Views -->
-        <record id="jaf_resource_local_search" model="ir.ui.view">
+        <record id="medical_resource_local_search" model="ir.ui.view">
             <field name="name">Locals search</field>
-            <field name="model">jaf.resource.local</field>
+            <field name="model">medical.resource.local</field>
             <field name="type">search</field>
             <field name="arch" type="xml">
                    <search string="Locals search">
@@ -114,12 +114,12 @@
 
         
         <!--  Actions     -->
-        <record id="normal_action_jaf_local_list" model="ir.actions.act_window">
+        <record id="normal_action_medical_local_list" model="ir.actions.act_window">
             <field name="name">Locals</field>
-            <field name="res_model">jaf.resource.local</field>
+            <field name="res_model">medical.resource.local</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" eval="jaf_resource_local_list"/>
+            <field name="view_id" eval="medical_resource_local_list"/>
         </record>
         
         

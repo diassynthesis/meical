@@ -19,11 +19,11 @@
 #
 ##############################################################################
 
-import jaf_structure
-import jaf_department
-import jaf_resource
-import jaf_tool
-import jaf_employee
-import jaf_local
+import medical_structure
+import medical_department
+import medical_resource
+import medical_tool
+import medical_employee
+import medical_local
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

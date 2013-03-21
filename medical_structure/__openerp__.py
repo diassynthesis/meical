@@ -21,22 +21,22 @@
 
 
 {
-    'name': 'jaf_structure',
+    'name': 'medical_structure',
     'version': '1.0',
-    'author': 'JAF S.A.',
+    'author': 'medical S.A.',
     'category': '?',
-    "website": "http://www.jaf.com",
-    "depends": ['jaf_base', 'hr_holidays'],
+    "website": "http://www.medical.com",
+    "depends": ['medical_base', 'hr_holidays'],
     "description": """ Modules for structure administration """,
     "init_xml": [],
     "update_xml": [
-         'view/jaf_structure_view.xml',
-         'view/jaf_department_view.xml',
-         'view/jaf_employee_view.xml',
-         'view/jaf_tool_view.xml',
-         'view/jaf_local_view.xml',
-         'view/jaf_locations_view.xml',
-         'view/jaf_structure_menu.xml'
+         'view/medical_structure_view.xml',
+         'view/medical_department_view.xml',
+         'view/medical_employee_view.xml',
+         'view/medical_tool_view.xml',
+         'view/medical_local_view.xml',
+         'view/medical_locations_view.xml',
+         'view/medical_structure_menu.xml'
         ],
     'demo_xml': [],
     'test': [],

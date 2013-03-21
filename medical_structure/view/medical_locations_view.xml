@@ -2,13 +2,13 @@
 <openerp>
     <data>
      
-    	<!-- jaf Place -->
+    	<!-- medical Place -->
 		<!--  Form     -->
-		<record id="jaf_view_location_form_inherit" model="ir.ui.view">
+		<record id="medical_view_location_form_inherit" model="ir.ui.view">
             <field name="name">Edit location</field>
-            <field name="model">jaf.location</field>
+            <field name="model">medical.location</field>
             <field name="type">form</field>
-            <field name="inherit_id" ref="jaf_base.jaf_view_location_form" />
+            <field name="inherit_id" ref="medical_base.medical_view_location_form" />
             <field name="arch" type="xml">
                 <form string="Edit location" position="replace">
 	                <form string="Edit location">
@@ -53,10 +53,10 @@
         </record>
 
 		<!--  Tree     -->
-        <record id="jaf_view_location_tree_inherit" model="ir.ui.view">
+        <record id="medical_view_location_tree_inherit" model="ir.ui.view">
             <field name="name">Locations</field>
-            <field name="model">jaf.location</field>
-            <field name="inherit_id" ref="jaf_base.jaf_view_location_tree" />
+            <field name="model">medical.location</field>
+            <field name="inherit_id" ref="medical_base.medical_view_location_tree" />
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Locations" position="replace">
@@ -71,10 +71,10 @@
         </record>
         
         <!--  Search     -->
-         <record id="jaf_view_location_search_inherit" model="ir.ui.view">
+         <record id="medical_view_location_search_inherit" model="ir.ui.view">
             <field name="name">Location filters</field>
-            <field name="model">jaf.location</field>
-             <field name="inherit_id" ref="jaf_base.jaf_view_location_search" />
+            <field name="model">medical.location</field>
+             <field name="inherit_id" ref="medical_base.medical_view_location_search" />
             <field name="type">search</field>
             <field name="arch" type="xml">
                 <search string="Location search" position="replace">

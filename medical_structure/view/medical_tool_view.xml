@@ -28,11 +28,11 @@
             </field>
         </record>
 
-<!-- jaf tool category-->
+<!-- medical tool category-->
 		<!--  Form     -->
-		<record id="resource_jaf_tool_category_form" model="ir.ui.view">
+		<record id="resource_medical_tool_category_form" model="ir.ui.view">
             <field name="name">Edit resources category</field>
-            <field name="model">jaf.tool.category</field>
+            <field name="model">medical.tool.category</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Edit resource category">
@@ -46,9 +46,9 @@
         </record>
 
 		<!--  Tree     -->
-        <record id="resource_jaf_tool_category_tree" model="ir.ui.view">
+        <record id="resource_medical_tool_category_tree" model="ir.ui.view">
             <field name="name">Resourcess category</field>
-            <field name="model">jaf.tool.category</field>
+            <field name="model">medical.tool.category</field>
             <field name="field_parent">child_ids</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
@@ -60,31 +60,31 @@
         </record>
         
         <!--  Actions     -->
-        <record id="normal_action_jaf_tool_category_list" model="ir.actions.act_window">
+        <record id="normal_action_medical_tool_category_list" model="ir.actions.act_window">
             <field name="name">Resources category list</field>
-            <field name="res_model">jaf.tool.category</field>
+            <field name="res_model">medical.tool.category</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" eval="resource_jaf_tool_category_tree"/>
+            <field name="view_id" eval="resource_medical_tool_category_tree"/>
         </record>
         
         <!--  Actions     -->
-        <record id="normal_action_jaf_tool_category_tree" model="ir.actions.act_window">
+        <record id="normal_action_medical_tool_category_tree" model="ir.actions.act_window">
             <field name="name">Resources category tree</field>
-            <field name="res_model">jaf.tool.category</field>
+            <field name="res_model">medical.tool.category</field>
             <field name="view_type">tree</field>
             <field name="view_mode">tree,form</field>
 	        <field name="domain">[('parent_id','=',False)]</field>
-            <field name="view_id" eval="resource_jaf_tool_category_tree"/>
+            <field name="view_id" eval="resource_medical_tool_category_tree"/>
         </record>
         
         
        
-<!-- jaf resource tool -->
+<!-- medical resource tool -->
 		<!--  Form     -->
-		<record id="resource_jaf_tool_form" model="ir.ui.view">
+		<record id="resource_medical_tool_form" model="ir.ui.view">
             <field name="name">Resources</field>
-            <field name="model">jaf.resource.tool</field>
+            <field name="model">medical.resource.tool</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Edit resource">
@@ -127,9 +127,9 @@
         </record>
 
 		<!--  Tree     -->
-        <record id="resource_jaf_tool_tree" model="ir.ui.view">
+        <record id="resource_medical_tool_tree" model="ir.ui.view">
             <field name="name">Resources</field>
-            <field name="model">jaf.resource.tool</field>
+            <field name="model">medical.resource.tool</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Resourcess">
@@ -149,7 +149,7 @@
         <!-- Search Views -->
         <record id="view_resource_tool_search" model="ir.ui.view">
             <field name="name">Resources search</field>
-            <field name="model">jaf.resource.tool</field>
+            <field name="model">medical.resource.tool</field>
             <field name="type">search</field>
             <field name="arch" type="xml">
                    <search string="Resources search">
@@ -181,12 +181,12 @@
 
         
         <!--  Actions     -->
-        <record id="normal_action_jaf_tool_list" model="ir.actions.act_window">
+        <record id="normal_action_medical_tool_list" model="ir.actions.act_window">
             <field name="name">Resources</field>
-            <field name="res_model">jaf.resource.tool</field>
+            <field name="res_model">medical.resource.tool</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" eval="resource_jaf_tool_tree"/>
+            <field name="view_id" eval="resource_medical_tool_tree"/>
         </record>
         
   </data>

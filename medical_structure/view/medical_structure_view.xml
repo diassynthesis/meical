@@ -9,8 +9,8 @@
     -->
     
     	<!--  Search     -->
-		<record id="jaf_search_company_filter" model="ir.ui.view">
-	        <field name="name">jaf.search.company.filter</field>
+		<record id="medical_search_company_filter" model="ir.ui.view">
+	        <field name="name">medical.search.company.filter</field>
 	        <field name="model">res.company</field>
 	        <field name="type">search</field>
 	        <field name="arch" type="xml">
@@ -25,8 +25,8 @@
 	    
 		<!--  Form     -->
         	
-		<record id="jaf_view_company_form" model="ir.ui.view">
-		    <field name="name">jaf.res.company.form</field>
+		<record id="medical_view_company_form" model="ir.ui.view">
+		    <field name="name">medical.res.company.form</field>
 			<field name="model">res.company</field>
 			<field name="type">form</field>
 			<field name="inherit_id" ref="account.view_company_inherit_form" />
@@ -111,12 +111,12 @@
         </record>
         
         <!--  Actions     -->
-        <record id="normal_action_jaf_structure_list" model="ir.actions.act_window">
+        <record id="normal_action_medical_structure_list" model="ir.actions.act_window">
             <field name="name">Companies</field>
             <field name="res_model">res.company</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="search_view_id" ref="jaf_search_company_filter"/>
+            <field name="search_view_id" ref="medical_search_company_filter"/>
             <field name="view_id" eval="view_company_tree_inherit"/>
         </record>
         

@@ -38,10 +38,10 @@ class hr_department(osv.osv):
         'employee_ids':
             fields.one2many('hr.employee', 'department_id', 'Employees'),
         'local_ids':
-            fields.one2many('jaf.resource.local', 'department_id',
+            fields.one2many('medical.resource.local', 'department_id',
                             'Locals'),
         'tool_ids':
-            fields.one2many('jaf.resource.tool', 'department_id',
+            fields.one2many('medical.resource.tool', 'department_id',
                             'Resources'),
          }
     _defaults = {

@@ -23,28 +23,28 @@ from osv import fields, osv
 from tools.translate import _
 
 
-class jaf_location(osv.osv):
-    _name = "jaf.location"
-    _inherit = "jaf.location"
+class medical_location(osv.osv):
+    _name = "medical.location"
+    _inherit = "medical.location"
 
     def create(self, cr, uid, vals, context=None):
-        location_id = super(jaf_location, self).create(cr, uid,
+        location_id = super(medical_location, self).create(cr, uid,
                       vals, context=context)
         if "local_id" in vals.keys() and vals["local_id"]:
             context.update({"flat": True})
-            self.pool.get('jaf.resource.local').write(cr, uid,
+            self.pool.get('medical.resource.local').write(cr, uid,
                 [vals["local_id"], ], {'location_id': location_id},
                 context=context)
         return location_id
 
     def write(self, cr, uid, ids, vals, context=None):
         for idd in ids:
-            r = super(jaf_location, self).write(cr, uid,
+            r = super(medical_location, self).write(cr, uid,
                            idd, vals, context=context)
 #            if "flat" not in context.keys():
             if "local_id" in vals.keys() and vals["local_id"]:
                 context.update({"flat": True})
-                self.pool.get('jaf.resource.local').write(cr, uid,
+                self.pool.get('medical.resource.local').write(cr, uid,
                         [vals["local_id"], ], {'location_id': idd},
                         context=context)
             return r
@@ -52,7 +52,7 @@ class jaf_location(osv.osv):
     def onchange_local(self, cr, uid, ids, local_id=None, context=None):
         res = {}
         if local_id:
-            local_obj = self.pool.get('jaf.resource.local')
+            local_obj = self.pool.get('medical.resource.local')
             local_obj = local_obj.browse(cr, uid, local_id)
             res.update({"is_rented": local_obj.is_rented})
             res.update({"department_id": local_obj.department_id.id})
@@ -62,7 +62,7 @@ class jaf_location(osv.osv):
 
         #info associate to a local's place
         'local_id':
-                fields.many2one('jaf.resource.local',
+                fields.many2one('medical.resource.local',
                             'Local associate'),
         'is_rented':
                 fields.related('local_id', 'is_rented', type='boolean',
@@ -72,11 +72,11 @@ class jaf_location(osv.osv):
                             relation='hr.department', string='Department',
                             readonly=True,),
         }
-jaf_location()
+medical_location()
 
 
-class jaf_resource_local(osv.osv):
-    _name = "jaf.resource.local"
+class medical_resource_local(osv.osv):
+    _name = "medical.resource.local"
     _inherits = {"resource.resource": "resource_id"}
     _description = "local"
 
@@ -106,7 +106,7 @@ class jaf_resource_local(osv.osv):
     def onchange_place(self, cr, uid, ids, location_id=None, context=None):
         res = {}
         if location_id:
-            place_obj = self.pool.get('jaf.location')
+            place_obj = self.pool.get('medical.location')
             place_obj = place_obj.browse(cr, uid, location_id)
             res.update({"place_name": place_obj.name})
             res.update({"contact_ids": [idd.id for idd in \
@@ -122,29 +122,29 @@ class jaf_resource_local(osv.osv):
         return {'value': res}
 
     def create(self, cr, uid, vals, context=None):
-        local_id = super(jaf_resource_local, self).create(cr, uid,
+        local_id = super(medical_resource_local, self).create(cr, uid,
                       vals, context=context)
         if "flat" not in context.keys():
             if "location_id" in vals.keys() and vals["location_id"]:
-                self.pool.get('jaf.location').write(cr, uid,
+                self.pool.get('medical.location').write(cr, uid,
                                                   [vals["location_id"], ],
                         {'local_id': local_id}, context=context)
         return local_id
 
     def write(self, cr, uid, ids, vals, context=None):
         for idd in ids:
-            r = super(jaf_resource_local, self).write(cr, uid,
+            r = super(medical_resource_local, self).write(cr, uid,
                            idd, vals, context=context)
             if "flat" not in context.keys():
                 if "location_id" in vals.keys() and vals["location_id"]:
-                    self.pool.get('jaf.location').write(cr, uid,
+                    self.pool.get('medical.location').write(cr, uid,
                 [vals["location_id"], ], {'local_id': idd}, context=context)
             return r
 
     def unlink(self, cr, uid, ids, context=None):
         base_rec_list_id = [idd.resource_id.id for idd in self.browse(cr, uid,
                                                         ids, context=context)]
-        result = super(jaf_resource_local, self).unlink(cr, uid, ids, context)
+        result = super(medical_resource_local, self).unlink(cr, uid, ids, context)
         self.pool.get('resource.resource').unlink(cr, uid, base_rec_list_id,
                                                   context)
         return result
@@ -166,10 +166,10 @@ class jaf_resource_local(osv.osv):
         'number':
                 fields.integer('No.'),
         'parent_id':
-                fields.many2one('jaf.resource.local',
+                fields.many2one('medical.resource.local',
                                      'Parent local', select=True),
         'child_ids':
-                fields.one2many('jaf.resource.local', 'parent_id',
+                fields.one2many('medical.resource.local', 'parent_id',
                                      'Child locals'),
         'resources_ids':
             fields.function(_resources_list, string='Resources',
@@ -207,7 +207,7 @@ class jaf_resource_local(osv.osv):
                        string='State', store=True),
         'municipality_id':
                 fields.related('location_id', 'municipality_id', type='many2one',
-                       relation='jaf.municipality',
+                       relation='medical.municipality',
                        domain="[('state_id','=',state_id)]",
                        string='Municipality', store=True),
         }
@@ -232,7 +232,7 @@ class jaf_resource_local(osv.osv):
             context = {}
         level = 100
         while len(ids):
-            cr.execute('select distinct parent_id from jaf_resource_local \
+            cr.execute('select distinct parent_id from medical_resource_local \
             where id IN %s', (tuple(ids),))
             ids = filter(None, map(lambda x: x[0], cr.fetchall()))
             if not level:
@@ -249,7 +249,7 @@ class jaf_resource_local(osv.osv):
     _sql_constraints = [
         ('name_localname_uniq', 'unique(complete_name)',
          'The name must be unique per local!'), ]
-jaf_resource_local()
+medical_resource_local()
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

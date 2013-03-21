@@ -27,7 +27,7 @@ import tools
 class res_company(osv.osv):
     _name = "res.company"
     _inherit = "res.company"
-    _description = "jaf company structure representations "
+    _description = "medical company structure representations "
 
     def _members_list(self, cr, uid, ids, field, arg, context=None):
         res = {}
@@ -102,7 +102,7 @@ class res_company(osv.osv):
         'municipality_id':
             fields.function(_get_address_data, fnct_inv=_set_address_data,
                     type='many2one', domain="[('state_id','=',state_id)]",
-                    relation='jaf.municipality', string="Municipality",
+                    relation='medical.municipality', string="Municipality",
                     multi='address'),
         'vat':
             fields.related('partner_id', 'vat', string="Tax ID", type="char",

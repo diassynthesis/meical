@@ -133,7 +133,7 @@ class hr_employee(osv.osv):
                            store=True),
         'municipality_id':
             fields.related('address_home_id', 'municipality_id',
-                           type='many2one', relation='jaf.municipality',
+                           type='many2one', relation='medical.municipality',
                            string='Municipality', store=True),
         'title':
             fields.related('address_home_id', 'title', type='many2one',
@@ -144,7 +144,7 @@ class hr_employee(osv.osv):
                            relation='res.country', string='Country',
                            store=True),
         'work_location':
-            fields.many2one('jaf.location', 'Office Location'),
+            fields.many2one('medical.location', 'Office Location'),
         'street':
             fields.related('address_home_id', 'street', string='Street',
                            type="char", store=True, size=128),

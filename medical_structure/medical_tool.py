@@ -23,8 +23,8 @@ from osv import fields, osv
 from tools.translate import _
 
 
-class jaf_tool_category(osv.osv):
-    _name = "jaf.tool.category"
+class medical_tool_category(osv.osv):
+    _name = "medical.tool.category"
     _description = "tool_category"
 
     def name_get(self, cr, uid, ids, context=None):
@@ -54,30 +54,30 @@ class jaf_tool_category(osv.osv):
         'descriptions':
             fields.text('Descriptions',
                         help="Descriptions category."),
-        'parent_id': fields.many2one('jaf.tool.category',
+        'parent_id': fields.many2one('medical.tool.category',
                                      'Parent Category', select=True),
-        'child_ids': fields.one2many('jaf.tool.category', 'parent_id',
+        'child_ids': fields.one2many('medical.tool.category', 'parent_id',
                                      'Child Categories'),
         }
-jaf_tool_category()
+medical_tool_category()
 
 
-class jaf_resource_tool(osv.osv):
-    _name = "jaf.resource.tool"
+class medical_resource_tool(osv.osv):
+    _name = "medical.resource.tool"
     _inherits = {"resource.resource": "resource_id"}
     _description = "tool"
 
     def unlink(self, cr, uid, ids, context=None):
         base_rec_list_id = [idd.resource_id.id for idd in self.browse(cr, uid,
                                                         ids, context=context)]
-        result = super(jaf_resource_tool, self).unlink(cr, uid, ids, context)
+        result = super(medical_resource_tool, self).unlink(cr, uid, ids, context)
         self.pool.get('resource.resource').unlink(cr, uid, base_rec_list_id,
                                                   context)
         return result
 
     _columns = {
         'category_tool_id':
-                fields.many2one('jaf.tool.category', 'Resource category'),
+                fields.many2one('medical.tool.category', 'Resource category'),
         'resource_id':
                 fields.many2one('resource.resource', 'Resource',
                                  ondelete='cascade', required=True),
@@ -95,6 +95,6 @@ class jaf_resource_tool(osv.osv):
                                                  uid, 'resource.resource',
                                                  context=context)
     }
-jaf_resource_tool()
+medical_resource_tool()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

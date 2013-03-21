@@ -43,10 +43,10 @@ class resource_resource(osv.osv):
                                    'External')], 'Resource Type',
                                   required=True),
         'location_id':
-                fields.many2one('jaf.location', 'Location', help="Locations\
+                fields.many2one('medical.location', 'Location', help="Locations\
                         and contacts of the local's owner"),
         'local_id':
-                fields.many2one('jaf.resource.local', 'Local'),
+                fields.many2one('medical.resource.local', 'Local'),
         'partner_id':
                 fields.many2one('res.partner', 'Supplier',
                                 domain="[('supplier', '=', 'True')]"),
