@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+      
+    <!--
+    =========================
+    Structure Company inherit
+    =========================
+    -->
+    
+    	<!--  Search     -->
+		<record id="jaf_search_company_filter" model="ir.ui.view">
+	        <field name="name">jaf.search.company.filter</field>
+	        <field name="model">res.company</field>
+	        <field name="type">search</field>
+	        <field name="arch" type="xml">
+	            <search string="Companies search">
+		            <group>
+		                <field name="name" string="Name"/>
+		                <field name="code" />
+		            </group>
+	            </search>
+	        </field>
+	    </record>
+	    
+		<!--  Form     -->
+        	
+		<record id="jaf_view_company_form" model="ir.ui.view">
+		    <field name="name">jaf.res.company.form</field>
+			<field name="model">res.company</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="account.view_company_inherit_form" />
+			<field name="arch" type="xml">
+				<field name="name"  position='after'>
+					<field name="code" />
+                    <field name="vat" on_change="on_change_header(phone, phone2, email, fax, website, vat, company_registry)"/>
+                    <field name="company_registry" on_change="on_change_header(phone, phone2, email, fax, website, vat, company_registry)"/>
+                </field>
+				<xpath expr="//notebook/page[@string='General Information']" position="replace">
+					<page string="General Information">
+                     	<group colspan="4" col="6">
+			            	<group colspan="4" col="4">
+			                    <separator string="Postal Address" colspan="6"/>
+			                    <field name="street"/>
+			                    <field name="street2"/>
+			                    <field name="number"/>
+			                    <field name="zip"/>
+			                    <field name="city"/>
+			                    <field name="country_id"/>
+			                    <field name="state_id" domain="[('country_id','=',country_id)]"/>
+			                    <field name="municipality_id" domain="[('state_id','=',state_id)]"/>
+			                </group>
+		                	<group colspan="2" col="2">
+			                    <separator string="Communication" colspan="4" col="4"/>
+			                    <field name="phone" on_change="on_change_header(phone, phone2, email, fax, website, vat, company_registry)"/>
+		                      	<field name="phone2" on_change="on_change_header(phone, phone2,  email, fax, website, vat, company_registry)"/>
+		                      	<field name="email" on_change="on_change_header(phone, phone2, email, fax, website, vat, company_registry)"/>
+		                      	<field name="fax" on_change="on_change_header(phone, phone2, email, fax, website, vat, company_registry)"/>
+		                      	<field name="website" on_change="on_change_header(phone, phone2,  email, fax, website, vat, company_registry)"/>
+		               		</group>
+		           		</group>
+                        <separator string="Header/Footer of Reports" colspan="6"/>
+                        <group colspan="6" col="3">
+                            <field name="rml_header1" colspan="3"/>
+                            <newline/>
+                            <field name="rml_footer1" colspan="3" groups="base.group_extended"/>
+                            <newline/>
+                            <field name="rml_footer2" colspan="2"/>
+                            <button name="%(base.bank_account_update)d" string="Set Bank Accounts" type="action" icon="gtk-go-forward"/>
+                            <newline/>
+                            <label string="" colspan="2"/>
+                            <button name="%(base.preview_report)d" string="Preview Header" type="action" icon="gtk-print"/>
+                        </group>
+                   	</page>
+					<page string="Departments/Employees">
+	                	<group colspan="4" col="6">
+		                	<group colspan="1" col="1">
+		                		<separator string = "Departments"/>
+		                		<field name="department_ids" widget="many2many" nolabel="1">
+		                			<tree string="Despartments">
+					                    <field name="name"/>
+				                	</tree>
+		                		</field>
+		                	</group>
+		                	<group colspan="5" col="1">
+		                		<separator string="Employees"/>
+		                		<field name="members_id" nolabel="1"/>
+		                	</group>
+	                	</group>
+	                </page>
+            	</xpath>
+            </field>
+        </record>
+        
+        <!-- Tree -->
+        <record id="view_company_tree_inherit" model="ir.ui.view">
+            <field name="name">res.company.tree.inherit</field>
+            <field name="model">res.company</field>
+            <field name="type">tree</field>
+            <field name="field_parent">child_ids</field>
+            <field name="inherit_id" ref="base.view_company_tree" />
+            <field name="arch" type="xml">
+                <tree string="Companies" position="replace">
+                    <tree string="Companies">
+	                    <field name="name"/>
+	                    <field name="code"/>
+	                    <field name="partner_id"/>
+                	</tree>
+                </tree>
+            </field>
+        </record>
+        
+        <!--  Actions     -->
+        <record id="normal_action_jaf_structure_list" model="ir.actions.act_window">
+            <field name="name">Companies</field>
+            <field name="res_model">res.company</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="jaf_search_company_filter"/>
+            <field name="view_id" eval="view_company_tree_inherit"/>
+        </record>
+        
+	</data>
+</openerp>

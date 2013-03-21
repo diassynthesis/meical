@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+     
+    	<!-- jaf Place -->
+		<!--  Form     -->
+		<record id="jaf_view_location_form_inherit" model="ir.ui.view">
+            <field name="name">Edit location</field>
+            <field name="model">jaf.location</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="jaf_base.jaf_view_location_form" />
+            <field name="arch" type="xml">
+                <form string="Edit location" position="replace">
+	                <form string="Edit location">
+	                	<separator string = "General" colspan="6"/>
+	                		<newline/>
+			                	<group colspan="6">
+			                        <field name="location_id" invisible="True"/>
+			                        <field name="name" colspan="2" select="1"/>
+			                        <field name="local_id" on_change="onchange_local(local_id)" colspan="2" select="1"/>
+			                        <field name="is_rented" attrs="{'invisible': [('local_id','=', False)]}" colspan="2"/>
+			                        <field name="department_id" attrs="{'invisible': [('local_id','=', False)]}" colspan="2" select="1"/>                     
+			                    </group>	                
+			                    <newline/>
+			                    <separator string ="Address" colspan="6"/>
+			                    <newline/>
+			                    	<field name="street" colspan="2"/>
+		                    		<field name="street2" colspan="2"/>
+		                    		<field name="number" colspan="2"/>
+		                    		<field name="zip" colspan="2"/>
+		                    		<field name="city" colspan="2"/>
+		                    		<field name="country_id" colspan="2"/>
+		                    		<field name="state_id" domain="[('country_id','=',country_id)]" colspan="2" />
+		                    		<field name="municipality_id" domain="[('state_id','=',state_id)]" colspan="2"/>
+		                    	<newline/>
+			                    <separator string ="Contacts" colspan="6"/>
+			                    <newline/>
+			                		<field name="contact_ids" nolabel='1' colspan="6">
+			                			<tree string="Partner Contact">
+							                <field name="name"/>
+							                <field name="first_name"/>
+							                <field name="mobile"/>
+							                <field name="mobile2"/>
+							                <field name="phone"/>
+							                <field name="phone2"/>
+							                <field name="email"/>
+							                <field name="lang_id"/>
+							            </tree>
+							        </field>
+	           		</form>
+	        	</form>
+            </field>
+        </record>
+
+		<!--  Tree     -->
+        <record id="jaf_view_location_tree_inherit" model="ir.ui.view">
+            <field name="name">Locations</field>
+            <field name="model">jaf.location</field>
+            <field name="inherit_id" ref="jaf_base.jaf_view_location_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Locations" position="replace">
+	                <tree string="Locations">
+	                    <field name="name" />
+	                    <field name="local_id"/>
+	                    <field name="is_rented"/>
+	                    <field name="department_id"/>
+	                </tree>
+	        	</tree>
+            </field>
+        </record>
+        
+        <!--  Search     -->
+         <record id="jaf_view_location_search_inherit" model="ir.ui.view">
+            <field name="name">Location filters</field>
+            <field name="model">jaf.location</field>
+             <field name="inherit_id" ref="jaf_base.jaf_view_location_search" />
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Location search" position="replace">
+	                <search string="Location search">
+	                	<field name="name" />
+	                	<field name="local_id" />	                	
+	                    <field name="department_id"/>
+	                </search>
+	         	</search>
+             </field>
+         </record>
+	</data>
+</openerp>

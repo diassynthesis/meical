@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    	<!--
+          State
+        -->
+
+        <!-- Search Views -->
+        <record id="medical_state_search" model="ir.ui.view">
+            <field name="name">State search</field>
+            <field name="model">res.country.state</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                   <search string="State search">
+	                   <group>	                       
+	                       <field name="name"/>
+	                       <field name="code"/>
+	                       <field name="country_id"/>
+	                   </group>
+	                   <newline/>
+	                   <group expand="0" string="Group By...">
+	                        <filter string="Country" context="{'group_by':'country_id'}" help="Filter state according to the country context"/>
+	                	</group>
+               		</search>
+        	</field>
+        </record>
+    
+        <!--
+          Municipality
+        -->
+
+        <record id="view_state_municipality_tree" model="ir.ui.view">
+            <field name="name">medical.municipality.tree</field>
+            <field name="model">medical.municipality</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Municipalitys">
+                    <field name="name" select="1"/>
+                    <field name="code" select="1"/>
+                    <field name="state_id" select="1"/>
+                    <field name="country_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_state_municipality_form" model="ir.ui.view">
+            <field name="name">medical.municipality.form</field>
+            <field name="model">medical.municipality</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Municipalitys">
+                    <field name="state_id" select="1"/>
+                    <field name="name" select="1"/>
+                    <field name="code" select="1"/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Search Views -->
+        <record id="medical_municipality_search" model="ir.ui.view">
+            <field name="name">Municipality search</field>
+            <field name="model">medical.municipality</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                   <search string="Municipality search">
+	                   <group>	                       
+	                       <field name="name"/>
+	                       <field name="code"/>
+	                       <field name="state_id" />
+	                       <field name="country_id"/>
+	                   </group>
+	                   <newline/>
+	                   <group expand="0" string="Group By...">
+	                        <filter string="State" context="{'group_by':'state_id'}" help="Filter municipality according to the state context"/>
+	                	</group>
+               		</search>
+        	</field>
+        </record>
+
+        <record id="action_state_municipality" model="ir.actions.act_window">
+            <field name="name">Municipalitys</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">medical.municipality</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_state_municipality_tree"/>
+            <field name="help">If you are working on the American market, you can manage the different federal states you are working on from here. Each state is attached to one country.</field>
+        </record>
+		
+        
+<!-- Res.parnert addrss inhert from base contact -->
+	<!-- Form -->
+	<record model="ir.ui.view" id="view_partner_address_form_inherited0_inherit">
+        <field name='name'>res.partner.address.form.inherited0</field>
+        <field name='model'>res.partner.address</field>
+        <field name="inherit_id" ref="base_contact.view_partner_address_form_inherited0"/>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+            <field name="contact_id" position="replace">
+                <field name="contact_id" on_change="onchange_contact_id(contact_id)"/>
+           	</field>
+       	</field>
+    </record>
+
+<!-- Res.partner contact inherit -->
+      	<!-- Tree -->
+      	<record model="ir.ui.view" id="view_partner_contact_tree_inherit">
+	        <field name="name">res.partner.contact.tree</field>
+	        <field name="model">res.partner.contact</field>
+	        <field name="inherit_id" ref="base_contact.view_partner_contact_tree" />
+	        <field name="type">tree</field>
+	        <field name="arch" type="xml">
+	            <tree string="Partner Contact" position="replace">
+		            <tree string="Partner Contact">
+		                <field name="name"/>
+		                <field name="first_name"/>
+		                <field name="mobile"/>
+		                <field name="mobile2"/>
+		                <field name="phone"/>
+		                <field name="phone2"/>
+		                <field name="email"/>
+		                <field name="lang_id"/>
+		                <field name="partner_id" invisible="1" select="1"/>
+		                <field name="function"/>
+		            </tree>
+		    	</tree>
+	        </field>
+	    </record>
+	    
+	    <!-- Form -->
+	    <record model="ir.ui.view" id="view_partner_contact_form_inherit">
+        <field name="name">res.partner.contact.form</field>
+        <field name="model">res.partner.contact</field>
+        <field name="inherit_id" ref="base_contact.view_partner_contact_form" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+	    	<form string="Partner Contact" position="replace">
+	            <form string="Partner Contact">
+	                <group colspan="4" col="8">
+	                    <field name="last_name" select="1" />
+	                    <field name="first_name" select="1" required="True" />
+	                    <field name="title" select="1" widget="selection" domain="[('domain', '=', 'contact')]" size="0" />
+	                </group>
+	                <notebook colspan="4">
+	                    <page string="General">
+	                       <group colspan="4" col="8">
+	                            <group colspan="6" col="6">
+	                                <separator string="Personal Information" colspan="6"/>
+	                                <field name="mobile"/>
+	                                <field name="mobile2"/>
+	                                <field name="phone"/>
+	                                <field name="phone2"/>
+	                                <field name="email"  widget="email"/>
+	                                <field name="website"/>
+	                                <field name="lang_id" widget="selection"/>
+			                        <field name="partner_id" invisible="1" select="1"/>
+			                        <field name="function" invisible="1" />
+			                        <field name="country_id" widget="selection"/>
+			                        <field name="birthdate"/>
+                                    <field name="fax"/>
+			                        <field name="active" size="0"/>
+	                            </group>
+	                            <group colspan="2" col="1">
+	                                <separator string="Photo" colspan="4"/>
+	                                <field name="photo" widget='image' nolabel="1"/>
+	                            </group>
+	                       </group>
+	                    </page>
+	                    <page string="Description">
+	                        <field name="comment" nolabel="1"/>
+	                    </page>
+	                </notebook>
+	            </form>
+            </form>
+        </field>
+    </record>
+
+<!-- Location inherit -->
+	    <!-- Form -->
+	    <record model="ir.ui.view" id="view_partner_location_form_inherit">
+	        <field name="name">res.partner.location.form</field>
+	        <field name="model">res.partner.location</field>
+	        <field name="inherit_id" ref="base_contact.view_partner_location_form" />
+	        <field name="type">form</field>
+	        <field name="arch" type="xml">
+	            <form string="Locations" position="replace">
+		            <form string="Locations">
+		                <field name="street" colspan="4"/>
+		                <field name="street2" colspan="4"/>
+		                <field name="number"/>
+		                <field name="zip"/>
+		                <field name="city"/>
+		                <field name="country_id"/>
+		                <field name="state_id" domain="[('country_id','=',country_id)]"/>
+		                <field name="municipality_id" domain="[('state_id','=',state_id)]"/>
+		            </form>
+		    	</form>
+	        </field>
+	    </record>
+	    
+      
+  <!-- medical location -->
+		<!--  Form     -->
+		<record id="medical_view_location_form" model="ir.ui.view">
+            <field name="name">Edit location</field>
+            <field name="model">medical.location</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Edit location">
+                	<notebook colspan="6" >
+	                	<page string = "General" >
+			                <group colspan="6" >
+		                        <field name="name" />
+		                    </group>	                
+		                    <newline/>
+	                        <separator string ="Address" colspan="6"/>
+		                    <newline/>
+		                    	<field name="street" colspan="2"/>
+	                    		<field name="street2" colspan="2"/>
+	                    		<field name="number" colspan="2"/>
+	                    		<field name="zip" colspan="2"/>
+	                    		<field name="city" colspan="2"/>
+	                    		<field name="country_id" colspan="2"/>
+	                    		<field name="state_id" domain="[('country_id','=',country_id)]" colspan="2" />
+	                    		<field name="municipality_id" domain="[('state_id','=',state_id)]" colspan="2"/>
+	                    	<newline/>
+		                    <separator string ="Contacts" colspan="6"/>
+		                    <newline/>
+		                		<field name="contact_ids" nolabel='1' colspan="6">
+		                			<tree string="Partner Contact">
+						                <field name="name"/>
+						                <field name="first_name"/>
+						                <field name="mobile"/>
+						                <field name="mobile2"/>
+						                <field name="phone"/>
+						                <field name="phone2"/>
+						                <field name="email"/>
+						                <field name="lang_id"/>
+						            </tree>
+						        </field>
+		                </page>
+                	</notebook>
+           		</form>
+            </field>
+        </record>
+
+		<!--  Tree     -->
+        <record id="medical_view_location_tree" model="ir.ui.view">
+            <field name="name">Locations</field>
+            <field name="model">medical.location</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Locations">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <!--  Search     -->
+         <record id="medical_view_location_search" model="ir.ui.view">
+            <field name="name">Locations filters</field>
+            <field name="model">medical.location</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Location search">
+                	<field name="name" />
+                </search>
+             </field>
+         </record>
+        
+        <!--  Actions     -->
+        <record id="normal_action_medical_location_list" model="ir.actions.act_window">
+            <field name="name">Locations</field>
+            <field name="res_model">medical.location</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="medical_view_location_tree"/>
+        </record>
+        
+        
+	<!-- Partnert address inherit -->
+	<!-- Tree -->
+		<record id="view_partner_address_tree_inherit" model="ir.ui.view">
+            <field name="name">res.partner.address.tree</field>
+            <field name="model">res.partner.address</field>
+            <field name="inherit_id" ref="base.view_partner_address_tree" />
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Partner Addresses">
+                    <field name="phone" position="after">
+                    	<field name="phone2"/>
+                    	<field name="mobile"/>
+                    	<field name="mobile2"/>
+                    	<field name="email"/>
+                    </field>
+                </tree>
+            </field>
+        </record>
+        
+       <record id="view_partner_address_form1_inherit" model="ir.ui.view">
+            <field name="name">res.partner.address.form1</field>
+            <field name="model">res.partner.address</field>
+            <field name="type">form</field>
+            <field eval="8" name="priority"/>
+            <field name="inherit_id" ref="base.view_partner_address_form1" />
+            <field name="arch" type="xml">
+                <form string="Address" position="replace">
+	                <form string="Address">
+	                    <group col="8">
+		                    <group colspan="8" col="8">
+		                        <field name="partner_id"/>
+		                        <field name="active"/>
+		                        <field name="company_id" groups="base.group_multi_company,base.group_extended" widget="selection"/>
+		                        <newline/>
+		                        <field name="name" required="True"/>
+		                        <field domain="[('domain', '=', 'contact')]" name="title"/>
+		                        <field name="function"/>
+		                    </group>
+		                      <group colspan="6" col="6">
+		                        <separator string="Postal Address" colspan="6"/>
+		                        <field name="type" colspan="4"/>
+		                        <newline/>
+		                        <field name="street"/>
+		                        <field name="street2"/>
+		                        <field name="number"/>
+		                        <field name="zip"/>
+				                <field name="city"/>
+		                        <field name="country_id"/>
+		                        <field name="state_id"/>
+		                        <field name="municipality_id"/>
+		                      </group>
+		                      <group colspan="2" col="2">
+		                        <separator string="Communication" colspan="2"/>
+		                        <field name="phone"/>
+		                        <field name="phone2"/>
+		                        <field name="fax"/>
+		                        <field name="mobile"/>
+		                        <field name="mobile2"/>
+		                        <field name="email" widget="email"/>
+		                        <field name="website"/>
+		                     </group>
+		            	</group>
+	                </form>
+	        	</form>
+            </field>
+        </record>
+        
+    <!-- Partnert view inherit -->
+	<!-- tree -->
+		<record id="view_partner_tree_inherit" model="ir.ui.view">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree" />
+            <field name="type">tree</field>
+          	<field name="arch" type="xml">
+	                <field name="phone" position="after">
+	                   	<field name="phone2">
+	                </field>
+	                <field name="email" position="after">
+	                	<field name="mobile"/>
+	                	<field name="mobile2"/>
+	                </field>
+	            </field>
+            </field>
+        </record>
+        
+        <record id="medical_view_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base_contact.view_partner_form_inherit" />
+            <field name="type">form</field>
+          	<field name="arch" type="xml">
+          		<xpath expr="//notebook/page[@string='General']" position="replace">
+					<page string="General">
+						<field colspan="4" name="address" nolabel="1" select="1" height="260">
+		                    <form string="Partner Contacts">
+		                        <group colspan="4" col="6">
+		                            <field name="first_name" required="True"/>
+		                            <field name="last_name" required="True"/>
+		                            <field domain="[('domain', '=', 'contact')]" name="title" size="0"/>
+		                            <field name="function"/>
+		                        </group>
+		                        <newline/>
+		                          <group colspan="6" col="6">
+			                          <group colspan="4" col="4">
+			                            <separator string="Postal Address" colspan="4"/>
+			                            <field name="type" string="Type" colspan="2"/>
+			                            <field name="street" colspan="2"/>
+			                            <field name="street2" colspan="2"/>
+			                            <field name="number" colspan="2"/>
+			                            <field name="zip" colspan="2"/>
+			                            <field name="city" colspan="2"/>
+			                            <field name="country_id" completion="1" colspan="2"/>
+			                            <field name="state_id" domain="[('country_id','=',country_id)]" colspan="2"/>
+			                            <field name="municipality_id" domain="[('state_id','=',state_id)]" colspan="2"/>
+			                         </group>
+			                         <group colspan="2" col="2">
+			                            <separator string="Communication" colspan="2"/>
+			                            <field name="phone" colspan="2"/>
+			                            <field name="phone2" colspan="2"/>
+			                            <field name="mobile" colspan="2"/>
+			                            <field name="mobile2" colspan="2"/>
+			                            <field name="fax" colspan="2"/>
+			                            <field name="website" colspan="2"/>
+			                            <field name="email" widget="email" colspan="2"/>
+			                         </group>
+			                	</group>
+		                    </form>
+		                    <tree string="Partner Contacts">
+                                <field name="last_name"/>
+                                <field name="first_name"/>
+		                        <field name="zip"/>
+		                        <field name="city"/>
+		                        <field name="country_id"/>
+		                        <field name="phone"/>
+		                        <field name="phone2"/>
+		                        <field name="mobile"/>
+		                        <field name="mobile2"/>
+		                        <field name="email"/>
+		                        <field name="website"/>
+		                    </tree>
+		                </field>
+			   		</page>
+			   		<page string="Categories" groups="base.group_extended">
+			   		<separator colspan="4" string="Categories"/>
+                            <field  colspan="4" name="category_id" nolabel="1"/>
+                    </page>
+               	</xpath>
+	        </field>
+        </record>
+    
+	</data>
+</openerp>

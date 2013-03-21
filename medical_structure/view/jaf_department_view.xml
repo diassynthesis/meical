@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+<!-- Deparment inherits -->
+
+        <!--  Tree     -->
+        <record id="view_department_tree_inherit" model="ir.ui.view">
+            <field name="name">Departments list</field>
+            <field name="model">hr.department</field>
+            <field name="type">tree</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+            	<tree>
+                	<field name="complete_name"/>
+                    <field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+                    <field name="manager_id"/>
+                    <field name="category"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!--  Search     -->
+         <record id="view_department_filter_inherit" model="ir.ui.view">
+            <field name="name">Departments search</field>
+            <field name="model">hr.department</field>
+            <field name="type">search</field>
+            <field name="inherit_id" ref="hr.view_department_filter" />
+            <field name="arch" type="xml">
+                <search  string="Departments" position="replace">
+                    <search string="Departments">
+                    	<field name="name" string="Department name"/>
+                    	<field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+                    	<field name="manager_id" />
+                    	<field name="category"/>
+                    	<newline/>
+                    	<group expand="0" string="Group By...">
+                    		<filter string="Company" groups="base.group_multi_company,base.group_extended" help="Filter department according to the company owner" context="{'group_by':'company_id'}"/>
+	                        <separator orientation="vertical"/>
+	                        <filter string="Manager" help="Filter department according to manager employee" context="{'group_by':'manager_id'}"/>
+	                		<separator orientation="vertical"/>
+	                        <filter string="Category" help="Filter department according to the category classification" context="{'group_by':'category'}"/>
+	                	</group>
+                	</search>
+                </search>
+             </field>
+         </record>
+        
+        <!--  Form     -->
+        <record id="view_department_form_jaf" model="ir.ui.view">
+            <field name="name">Edit departments</field>
+            <field name="model">hr.department</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="hr.view_department_form" />
+            <field name="arch" type="xml">
+                <form string="department" position="replace">
+                    <form string="Edit company's department">
+	                    <separator colspan="4" string ="General informations" />
+	                        <field name="name" string ="Department"/>
+	                        <field name="category"/>
+	                        <field name="parent_id" string ="Parent department"/>
+	                        <field name="manager_id" select="1"/>
+	                        <field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+	                    <notebook colspan="4" >
+	                        <page string = "Employees" >
+	                        	<field name="employee_ids" nolabel = '1'>
+	                        		 <form string="Employee">
+					                    <group colspan="4" col="8">
+					                        <group colspan="6" col="6">
+						                        <field domain="[('domain', '=', 'contact')]" name="title" size="0" colspan="2"/>
+                    							<field name="name" colspan="4"/>
+                    							<field name="last_name" colspan="4"/>
+						                        <field name="user_id" on_change="onchange_user(user_id)"/>
+						                        <field name="company_id" widget="selection" groups="base.group_multi_company,base.group_extended" on_change="onchange_company(company_id)"/>
+						                        <field name="active" groups="base.group_extended"/>
+						                        <newline/>
+						                        <field name="parent_id" />
+					                        </group>
+					                        <group colspan="2" col="1">
+					                          <field name="photo" widget='image' nolabel="1"/>
+					                        </group>
+					                    </group>
+					                    <notebook colspan="6">
+					                        <page string="Personal Information">
+						                    	<group col="2" colspan="2" groups="base.group_hr_user">
+						                        	<separator colspan="2" string="Social IDs"/>
+						                        	<field name="ssnid"/>
+						                            <field name="sinid" groups="base.group_extended"/>
+						                            <field name="identification_id" groups="base.group_extended"/>
+						                            <field name="passport_id"/>
+						                            <field name="otherid" invisible="True"/>
+						                        </group>
+						                        <group col="2" colspan="2" groups="base.group_hr_user">
+						                        	<separator string="Status" colspan="2"/>
+						                            <field name="gender"/>
+						                            <field name="marital"/>
+						                            <field name="country_id" widget="selection"/>
+						                            <field name="birthday"/>
+						                       	</group>
+						                       	<newline/>
+						                        <group col="4" colspan="4">
+						                        	<separator string="Job Information" colspan="4"/>
+						                            <field name="work_location" colspan="2"/>
+						                            <field name="job_id" domain="[('state','!=','old')]" colspan="2"/>
+						                            <field name="coach_id" colspan="2"/>
+						                        </group>
+						                    </page>
+						                    <page string="Address/Contacts">
+							                    <group colspan="4" col="6">
+							                    	<field name="address_id" colspan="6"/>
+							                    	<field name="address_home_id" on_change="onchange_address_home_id(address_home_id)" colspan="6"/>
+							                    </group>
+						                     	<newline/>
+						                       	<group colspan="6" col="6">
+							                        <group colspan="4" col="4">
+							                          <separator string="Home Address details" colspan="4"/>
+							                          <field name="street" colspan="2"/>
+							                          <field name="street2" colspan="2"/>
+							                          <field name="number" colspan="2"/>
+							                          <field name="zip" colspan="2"/>
+							                          <field name="city" colspan="2"/>
+							                          <field name="country_address_id" completion="1" colspan="2"/>
+							                          <field name="state_id" domain="[('country_id','=',country_id)]" colspan="2"/>
+							                          <field name="municipality_id" domain="[('state_id','=',state_id)]" colspan="2"/>
+							                       	</group>
+							                       <group colspan="2" col="2">
+							                          <separator string="Communication" colspan="2"/>
+							                          <field name="work_phone" colspan="2"/>
+							                          <field name="other_phone" colspan="2"/>
+							                          <field name="mobile_phone" colspan="2"/>
+							                          <field name="mobile2" colspan="2"/>
+							                          <field name="fax" colspan="2"/>
+							                          <field name="website" colspan="2"/>
+							                          <field name="work_email" widget="email" colspan="2"/>
+							                       </group>
+						              			</group>
+								            </page>
+					                        <page string="Categories" groups="base.group_hr_user">
+					                            <field name="category_ids" nolabel="1"/>
+					                        </page>
+					                        <page string="Notes" groups="base.group_hr_user">
+					                            <field colspan="4" nolabel="1" name="notes"/>
+					                        </page>
+					                    </notebook>
+					                </form>
+	                        	</field>
+	                        </page>
+	                        <page string="Locals">
+	                        	<field name="local_ids" nolabel = '1' />
+	                    	</page>
+	                    	<page string="Resources">
+	                        	<field name="tool_ids" nolabel = '1' />
+	                    	</page>
+	                    	<page string="Projects">
+	                        	<field name="project_ids" nolabel = '1'/>
+	                    	</page>           	
+	                    </notebook>
+                	</form>
+                </form>
+            </field>
+        </record>
+        
+        <!--  Actions     -->
+        <record id="normal_action_jaf_department_list" model="ir.actions.act_window">
+            <field name="name">Departments</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="view_department_tree_inherit"/>
+        </record>
+        
+	</data>
+</openerp> 

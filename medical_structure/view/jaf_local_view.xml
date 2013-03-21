@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+<!-- Local resource inherits -->
+		<!--  Form     -->
+		<record id="jaf_resource_local_form" model="ir.ui.view">
+            <field name="name">Locals</field>
+            <field name="model">jaf.resource.local</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Edit Locals">
+                	<notebook colspan="4" >
+	                	<page string = "General" >
+	                		<group colspan="6" col="8">
+		                        <group colspan="6" col="6">
+			                        <field colspan="3" name="name" />
+			                        <field colspan="3" name="code" />
+			                        <field colspan="3" name="number" />
+			                        <field colspan="3" name="parent_id" />
+			                        <field colspan="3" name="location_id" on_change="onchange_place(location_id)"/>
+			                        <field colspan="1" name="is_rented"/>
+			                    </group>		                            
+	                            <group colspan="2" col="2">
+	                            	<field name="photo" widget='image' nolabel="1"/>
+	                        	</group>
+		                    </group>	
+		                    <newline/>
+	                        	<group colspan="6">
+	                        	<separator string="Others" colspan="6"/>
+	                        	<newline/>
+	                        		<field colspan="2" name="responsible_id" />
+	                        		<field colspan="2" name="fabrication_year" />
+	                        		<field colspan="2" name="partner_id" attrs="{'required':[('is_rented','=',True)],'invisible': [('is_rented','=', False)]}"/>
+			                        <field colspan="2" name="technical_state"/>
+			                        <field colspan="2" name="company_id" groups="base.group_multi_company,base.group_extended"/>
+			                        <field colspan="2" name="department_id" />
+	                        	</group>
+                       	</page>
+                       	<page string ="Address and Contacts" attrs="{'invisible': [('location_id','=', False)]}">
+	                   		 <separator string ="Address" colspan="6"/>
+			                    <newline/>
+			                    	<field name="street" colspan="2"/>
+		                    		<field name="street2" colspan="2"/>
+		                    		<field name="number_build" colspan="2"/>
+		                    		<field name="zip" colspan="2"/>
+		                    		<field name="city" colspan="2"/>
+		                    		<field name="country_id" colspan="2" widget="selection"/>
+		                    		<field name="state_id" domain="[('country_id','=',country_id)]" colspan="2" />
+		                    		<field name="municipality_id" domain="[('state_id','=',state_id)]" colspan="2"/>
+		                    	<newline/>
+			                    <separator string ="Contacts" colspan="6"/>
+			                    <newline/>
+			                		<field name="contact_ids" nolabel='1' colspan="6"/>
+            			</page>
+            			<page string = "Resources">
+	                    	<field name="resources_ids" nolabel='1'/>                       
+	                    </page>
+            	 		<page string = "Childs">
+	                    	<field name="child_ids" widget="many2many" nolabel='1'/>                       
+	                    </page>
+	                    <page string = "Description">
+	                    	<field name="general_descriptions" widget="text" nolabel='1'/>                       
+	                    </page>                   	
+	                </notebook>
+           		</form>
+            </field>
+        </record>
+
+		<!--  Tree     -->
+        <record id="jaf_resource_local_list" model="ir.ui.view">
+            <field name="name">Locals</field>
+            <field name="model">jaf.resource.local</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Locals">
+                    <field name="complete_name"/>
+                    <field name="code" />
+                    <field name="responsible_id" />
+                    <field name="department_id"/>
+                    <field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+                    <field name="fabrication_year" />
+                </tree>
+            </field>
+        </record>
+        
+
+        <!-- Search Views -->
+        <record id="jaf_resource_local_search" model="ir.ui.view">
+            <field name="name">Locals search</field>
+            <field name="model">jaf.resource.local</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                   <search string="Locals search">
+	                   <group>	                       
+	                       <field name="name"/>
+	                       <field name="code"/>
+	                       <field name="responsible_id" />
+	                       <field name="department_id"/>
+	                       <field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+	                       <field name="fabrication_year" />
+	                   </group>
+	                   <newline/>
+	                   <group expand="0" string="Group By...">
+	                        <filter string="Company" context="{'group_by':'company_id'}" groups="base.group_multi_company,base.group_extended" help="Filter local according to the company owner"/>
+	                        <separator orientation="vertical"/>
+	                        <filter string="Department" context="{'group_by':'department_id'}" help="Filter local according to the department owner"/>
+	                        <separator orientation="vertical"/>
+	                        <filter string="Responsible" context="{'group_by':'responsible_id'}" help="Filter local according to the responsible owner"/>
+	                	</group>
+               		</search>
+        	</field>
+        </record>
+
+        
+        <!--  Actions     -->
+        <record id="normal_action_jaf_local_list" model="ir.actions.act_window">
+            <field name="name">Locals</field>
+            <field name="res_model">jaf.resource.local</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="jaf_resource_local_list"/>
+        </record>
+        
+        
+		
+  </data>
+</openerp> 

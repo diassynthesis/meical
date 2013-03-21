@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+<!-- Deparment inherits -->
+
+    <!--
+        ==========
+        Employee
+        ==========
+        -->
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="hr.view_employee_form" />
+            <field name="arch" type="xml">
+            	<field name="name" position="replace">
+            		<field domain="[('domain', '=', 'contact')]" name="title" size="0" colspan="2"/>
+            		<field name="name" colspan="4"/>
+                </field>
+            	<field name="user_id" position="before">
+            		<field name="last_name" colspan="4"/>
+            	</field>	
+            	<xpath expr='//notebook/page[@string="Notes"]' position="replace">
+                	<page string="Description" groups="base.group_hr_user">
+                            <field colspan="4" nolabel="1" name="notes"/>
+                     </page>
+                </xpath>
+            	<xpath expr='//field[@name="company_id"]' position="replace">
+                	<field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+                </xpath>
+		         <page string="Personal Information" position="replace"> 
+		         	<page string="Personal Information">
+                    	<group col="2" colspan="2" groups="base.group_hr_user">
+                        	<separator colspan="2" string="Social IDs"/>
+                        	<field name="ssnid"/>
+                            <field name="sinid" groups="base.group_extended"/>
+                            <field name="identification_id" groups="base.group_extended"/>
+                            <field name="passport_id"/>
+                            <field name="otherid" invisible="True"/>
+                        </group>
+                        <group col="2" colspan="2" groups="base.group_hr_user">
+                        	<separator string="Status" colspan="2"/>
+                            <field name="gender"/>
+                            <field name="marital"/>
+                            <field name="country_id" widget="selection"/>
+                            <field name="birthday"/>
+                       	</group>
+                       	<newline/>
+                        <group col="4" colspan="4">
+                        	<separator string="Job Information" colspan="4"/>
+                            <field name="work_location" colspan="2"/>
+                            <field name="job_id" domain="[('state','!=','old')]" colspan="2"/>
+                            <field name="coach_id" colspan="2"/>
+		                    <field name="current_leave_state" attrs="{'invisible':[('current_leave_id','=',False)]}" colspan="2"/>
+                        </group>
+                    </page>
+                    <page string="Address/Contacts">
+	                    <group colspan="4" col="6">
+	                    	<field name="address_id" colspan="6"/>
+	                    	<field name="address_home_id" on_change="onchange_address_home_id(address_home_id)" colspan="6"/>
+	                    </group>
+                     	<newline/>
+                       	<group colspan="6" col="6">
+	                        <group colspan="4" col="4">
+	                          <separator string="Home Address details" colspan="4"/>
+	                          <field name="street" colspan="2"/>
+	                          <field name="street2" colspan="2"/>
+	                          <field name="number" colspan="2"/>
+	                          <field name="zip" colspan="2"/>
+	                          <field name="city" colspan="2"/>
+	                          <field name="country_address_id" completion="1" colspan="2"/>
+	                          <field name="state_id" domain="[('country_id','=',country_id)]" colspan="2"/>
+	                          <field name="municipality_id" domain="[('state_id','=',state_id)]" colspan="2"/>
+	                       	</group>
+	                       <group colspan="2" col="2">
+	                          <separator string="Communication" colspan="2"/>
+	                          <field name="work_phone" colspan="2"/>
+	                          <field name="other_phone" colspan="2"/>
+	                          <field name="mobile_phone" colspan="2"/>
+	                          <field name="mobile2" colspan="2"/>
+	                          <field name="fax" colspan="2"/>
+	                          <field name="website" colspan="2"/>
+	                          <field name="work_email" widget="email" colspan="2"/>
+	                       </group>
+              			</group>
+		            </page>
+                </page>
+            </field>
+        </record>
+
+        <record id="view_employee_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.employee</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr='//field[@name="company_id"]' position="replace">
+                	<field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_employee_filter_inherit" model="ir.ui.view">
+            <field name="name">Employees</field>
+            <field name="model">hr.employee</field>
+            <field name="type">search</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <search string="Employees" position="replace">
+                    <search string="Employees">
+	                    <filter icon="terp-personal+" domain="[('active','=',True)]" name="active" string="Active" groups="base.group_extended"
+	                    			help="Employees on active state"/>
+	                    <separator orientation="vertical" />
+	                    <field name="name"/>
+	                    <field name="department_id" widget="selection">
+	                    <filter icon="terp-personal+" domain="[('department_id','=',context.get('department_id',False))]" help="My Departments Employee" string="My Departments Employee"/>
+	                    </field>
+	                    <field name="job_id" widget="selection"/>
+	                    <field name="category_ids" select="1" groups="base.group_extended"/>
+	                    <field name="parent_id"/>
+	                    <newline />
+	                    <group expand="0" string="Group By...">
+		                    <filter string="Manager" icon="terp-personal" domain="[]" help="Filter employees by manager" context="{'group_by':'parent_id'}"/>
+		                    <filter string="Coach" icon="terp-personal" domain="[]" help="Filter employees by coach" context="{'group_by':'coach_id'}" groups="base.group_extended"/>
+		                    <separator orientation="vertical" />
+		                    <filter string="Department" icon="terp-personal+" domain="[]" help="Filter employees by department" context="{'group_by':'department_id'}"/>
+		                    <filter string="Job" icon="terp-gtk-select-all" domain="[]" help="Filter employees according to the job" context="{'group_by':'job_id'}"/>
+		                    <filter string="Company" icon="terp-go-home" domain="[]" help="Filter employee according to the company owner" context="{'group_by':'company_id'}" groups="base.group_multi_company,base.group_extended"/>
+	                    </group>
+	                </search>
+                </search>
+             </field>
+         </record>
+  </data>
+</openerp> 

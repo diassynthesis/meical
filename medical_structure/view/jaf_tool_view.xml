@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+<!-- resources tool inherit -->
+<!--  Form     -->
+<record id="resource_resource_form_inherit" model="ir.ui.view">
+            <field name="name">resource.resource.form.inherit</field>
+            <field name="model">resource.resource</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="resource.resource_resource_form" />
+            <field name="arch" type="xml">
+                <form string="Resource" position="replace">
+                   <form string="Resource">
+	                   <group col="6" colspan="4">
+	                       <field name="name" colspan="4"/>
+	                       <field name="active"/>
+	                       <newline/>
+	                       <field name="user_id" attrs="{'required':[('resource_type','=','user')], 'readonly':[('resource_type','=','material')]}"/>
+	                       <field name="resource_type" readonly="1"/>
+	                       <field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+	                       <newline/>
+	                       <field name="calendar_id" string="Working Period"/>
+	                       <field name="time_efficiency" groups="base.group_extended"/>
+	                    </group>
+                	</form>
+                </form>
+            </field>
+        </record>
+
+<!-- jaf tool category-->
+		<!--  Form     -->
+		<record id="resource_jaf_tool_category_form" model="ir.ui.view">
+            <field name="name">Edit resources category</field>
+            <field name="model">jaf.tool.category</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Edit resource category">
+                	<group colspan="6" col="6">
+			        	<field colspan="6" name="name" select="1" />
+			            <field colspan="6" name="descriptions" />
+			            <field name="parent_id"/>
+		            </group>	                
+           		</form>
+            </field>
+        </record>
+
+		<!--  Tree     -->
+        <record id="resource_jaf_tool_category_tree" model="ir.ui.view">
+            <field name="name">Resourcess category</field>
+            <field name="model">jaf.tool.category</field>
+            <field name="field_parent">child_ids</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Resources category">
+                    <field name="complete_name"/>
+                    <field name="descriptions" select="1" />
+                </tree>
+            </field>
+        </record>
+        
+        <!--  Actions     -->
+        <record id="normal_action_jaf_tool_category_list" model="ir.actions.act_window">
+            <field name="name">Resources category list</field>
+            <field name="res_model">jaf.tool.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="resource_jaf_tool_category_tree"/>
+        </record>
+        
+        <!--  Actions     -->
+        <record id="normal_action_jaf_tool_category_tree" model="ir.actions.act_window">
+            <field name="name">Resources category tree</field>
+            <field name="res_model">jaf.tool.category</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree,form</field>
+	        <field name="domain">[('parent_id','=',False)]</field>
+            <field name="view_id" eval="resource_jaf_tool_category_tree"/>
+        </record>
+        
+        
+       
+<!-- jaf resource tool -->
+		<!--  Form     -->
+		<record id="resource_jaf_tool_form" model="ir.ui.view">
+            <field name="name">Resources</field>
+            <field name="model">jaf.resource.tool</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Edit resource">
+                	<notebook colspan="4" >
+	                	<page string = "General" >
+	                		<group colspan="6" col="8">
+		                        <group colspan="6" col="6">
+			                        <field colspan="3" name="name" />
+			                        <field colspan="3" name="code" />
+			                        <field colspan="3" name="category_tool_id"/>
+			                        <field colspan="3" name="trade_mark"/>   
+		                       		<field colspan="3" name="local_id"/>
+	                       			<field colspan="3" name="active"/>
+	                       			<field colspan="3" name="responsible_id"/>
+		                       	</group>		                            
+	                            <group colspan="1" col="1">
+	                            	<field name="photo" widget='image' nolabel="1"/>
+	                        	</group>
+		                    </group>
+		                    <newline/>
+	                        	<group colspan="6">
+	                        	<separator string="Others" colspan="6"/>
+	                        	<newline/>
+	                        		<field colspan="2" name="fabrication_year" />
+	                        		<field colspan="2" name="partner_id"/>
+			                        <field colspan="2" name="technical_state"/>
+			                        <field colspan="2" name="company_id" groups="base.group_multi_company,base.group_extended"/>
+			                        <field colspan="2" name="department_id" />
+	                        	</group>
+                        </page>
+	                    <page string = "Thecnical specifications" >
+	                    	<field name="technical_descriptions" widget="text" nolabel='1'/>                       
+	                    </page>
+	                    <page string = "Description" >
+	                    	<field name="general_descriptions" widget="text" nolabel='1'/>                       
+	                    </page>	                                 	
+	                </notebook>
+           		</form>
+            </field>
+        </record>
+
+		<!--  Tree     -->
+        <record id="resource_jaf_tool_tree" model="ir.ui.view">
+            <field name="name">Resources</field>
+            <field name="model">jaf.resource.tool</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Resourcess">
+                    <field name="name" />
+                    <field name="code" />
+                    <field colspan="2" name="responsible_id"/>
+                    <field name="category_tool_id"/>
+                    <field name="department_id"/>
+                    <field name="local_id"/>
+                    <field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+                    <field name="fabrication_year" />
+                </tree>
+            </field>
+        </record>
+
+        
+        <!-- Search Views -->
+        <record id="view_resource_tool_search" model="ir.ui.view">
+            <field name="name">Resources search</field>
+            <field name="model">jaf.resource.tool</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                   <search string="Resources search">
+	                   <group>	                       
+	                       <field name="name"/>
+	                       <field name="code"/>
+	                       <field colspan="2" name="responsible_id"/>
+	                       <field name="category_tool_id"/>
+	                       <field name="department_id"/>
+	                       <field name="local_id"/>
+	                       <field name="company_id" groups="base.group_multi_company,base.group_extended"/>
+	                       <field name="fabrication_year" />
+	                   </group>
+	                   <newline/>
+	                   <group expand="0" string="Group By...">
+	                        <filter string="Company" groups="base.group_multi_company,base.group_extended" help="Filter resources according to the company owner" context="{'group_by':'company_id'}"/>
+	                        <separator orientation="vertical"/>
+	                        <filter string="Department" help="Filter resources according to the department owner" context="{'group_by':'department_id'}"/>
+	                        <separator orientation="vertical"/>
+	                        <filter string="Local" help="Filter resources according to the local owner" context="{'group_by':'local_id'}"/>
+	                        <separator orientation="vertical"/>
+	                        <filter string="Category" help="Filter resources according to the category classification" context="{'group_by':'category_tool_id'}"/>
+	                        <separator orientation="vertical"/>
+	                        <filter string="Responsible" help="Filter resources according to owner or responsible" context="{'group_by':'responsible_id'}"/>
+	                	</group>
+               		</search>
+        	</field>
+        </record>
+
+        
+        <!--  Actions     -->
+        <record id="normal_action_jaf_tool_list" model="ir.actions.act_window">
+            <field name="name">Resources</field>
+            <field name="res_model">jaf.resource.tool</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="resource_jaf_tool_tree"/>
+        </record>
+        
+  </data>
+</openerp> 
