@@ -2879,7 +2879,8 @@
 	<record model="ir.ui.view" id="view_partner_form">
     	<field name="name">res.partner.form</field>
 	    <field name="model">res.partner</field>
-	    <field name="inherit_id" ref="base.view_partner_form" />
+	    <!-- <field name="inherit_id" ref="base.view_partner_form" /> -->
+	    <field name="inherit_id" ref="medical_base.medical_view_partner_form_inherit" />
 	    <field name="type">form</field>
 		<field name="arch" type="xml">
 			<xpath expr="//form//field[@name='customer']" position="replace"/>
@@ -2888,14 +2889,7 @@
 				<field name="is_doctor" select="1"/>
 				<field name="is_person" select="1"/>
 				<field name="is_institution" select="1"/>
-			</xpath>
-			<xpath expr="//form/notebook/page/group/separator[@string='Categories']" position="replace"/>
-			<xpath expr="//form/notebook/page[@string='General']" position="after">
-				<page string="Categories" groups="base.group_extended">
-                	<separator colspan="4" string="Categories"/>
-                    <field  colspan="4" name="category_id" nolabel="1"/>
-	           	</page>
-	       	</xpath>
+			</xpath>	
     	</field>
 	</record>
 

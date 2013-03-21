@@ -5,7 +5,7 @@
 	'version' : '1.0',
 	'author' : 'Eloquenti@ Solutions SA de CV',
 	'category' : 'Medical verticalization',
-	'depends' : ['base','sale','purchase','account','product'],
+	'depends' : ['base','sale','purchase','account','product','medical_base','medical_structure'],
 	'description' : """
 
 About Medical
