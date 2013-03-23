@@ -26,7 +26,7 @@
     'author': 'medical S.A.',
     'category': '?',
     "website": "http://www.medical.com",
-    "depends": ['medical_base', 'hr_holidays'],
+    "depends": ['medical'],
     "description": """ Modules for structure administration """,
     "init_xml": [],
     "update_xml": [

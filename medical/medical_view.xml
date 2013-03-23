@@ -384,51 +384,55 @@
                         <field name="model">medical.patient.medication</field>
                         <field name="type">form</field>
                         <field name="arch" type="xml">
-                                <form string="Medication">
-                               		<field name="medicament" required="1"></field>
-					<field name="doctor"/>
-					<newline/>
-                             		<field name="is_active"></field>
-                               		<field name="indication"></field>
-                               		<newline/>
-                               		<field name="start_treatment" required="1"></field>
-					<field name="end_treatment"></field>
-					<newline/>
-                               		<field name="course_completed"></field>
-                               		<field name="discontinued"></field>
-                               		<field name="discontinued_reason"></field>
-					<newline/>
-					<group colspan="4" string="Dosage">
-	                               		<field name="form"></field>
-	                               		<field name="route"></field>
-						<group colspan="2">
-							<field name="dose"></field>
-							<field name="dose_unit"></field>
-						</group>
-						<field name="qty"></field>
-						<newline/>
-	                               		<field name="duration"></field>
-	                               		<field name="duration_period"></field>
-						<newline/>
-						<separator string="Common Dosage"/>
-						<newline/>
-						<field name="common_dosage"></field>
-						<field name="admin_times"></field>
-						<newline/>
-						<separator string="Specific Dosage"/>
-						<newline/>
-						<field name="frequency"></field>
-                               			<field name="frequency_unit"></field>
-						<newline/>
-					</group>
-					<newline/>
-					<separator string="Notes"/>
-					<newline/>
-                               		<field name="notes" nolabel="1" colspan="4"></field>
-
-                                </form>
+	                        <form string="Medication">
+	                        	<notebook>
+	                        		<page string="General medications data">
+	                        			<group col="4">
+		                        			<field colspan="2" name="medicament" required="1"></field>
+											<field colspan="2" name="name" required="1"/>
+											<field colspan="2" name="doctor"/>
+											<field colspan="2" name="is_active"></field>
+			                         		<field colspan="2" name="indication"></field>
+			                         		<field colspan="2" name="start_treatment" required="1"></field>
+											<field colspan="2" name="end_treatment"></field>
+											<group col="4" colspan="2">
+												<field colspan="2" name="course_completed"></field>
+			                         			<field colspan="2" name="discontinued"></field>
+											</group>
+											<newline/>
+											<separator colspan="4" string="Discountinued reason"/>
+											<field colspan="4" nolabel="1" name="discontinued_reason"></field>
+	                        			</group>
+	                        		</page>
+	                        		<page string="Dosage">
+	                        			<group col="8">
+	            		              		<field colspan="4" name="form"></field>
+	                    		      		<field colspan="4" name="route"></field>
+											<group col="8" colspan="4" string="Dosage">
+												<field colspan="2" name="dose"></field>
+												<field colspan="2" name="dose_unit"></field>
+												<field colspan="4" name="qty"></field>
+											</group>
+											<group col="4" colspan="4" string="Durations">
+												<field colspan="2" name="duration"></field>
+		                           				<field colspan="2" name="duration_period"></field>
+											</group>
+											<group colspan="4" string="Common Dosage">
+												<field name="common_dosage" string="Common frequency"></field>
+												<field name="admin_times"></field>		
+											</group>
+											<group colspan="4" string="Specific Dosage">
+												<field name="frequency"></field>
+			                           			<field name="frequency_unit"></field>
+											</group>
+											<separator colspan="8" string="Notes"/>
+	                        				<field name="notes" nolabel="1" colspan="8"></field>
+										</group>
+	                        		</page>
+	                        	</notebook>
+							</form>
                         </field>
-                </record>
+           			</record>
 
 
 
@@ -445,12 +449,47 @@
                                         <field name="course_completed"></field>
                                         <field name="discontinued"></field>
                                         <field name="is_active"></field>
+                                        <field name="name"></field>
+	           							<field name="doctor"></field>
 
                               </tree>
                         </field>
                 </record>
                 
+     <record id="view_medical_patien_medications_filter" model="ir.ui.view">
+		<field name="name">medical.patien_medication.select</field>
+		<field name="model">medical.patient.medication</field>
+		<field name="type">search</field>
+		<field name="arch" type="xml">
+			<search string="Search Medications">
+				<newline/>
+				<separator orientation="vertical"/>
+				    <field name="name"></field>
+	           		<field name="doctor"></field>
+	           		<field name="is_active"></field>
+	           		<field name="discontinued"></field>
+	           		<field name="medicament"></field>
+				<newline/>
+				<group expand="0" string="Group By..." colspan="11" col="11" groups="base.group_extended">
+					<filter string="Doctor" icon="terp-personal" domain="[]" context="{'group_by':'doctor'}"/>
+					<filter string="Patients" icon="terp-personal" domain="[]" context="{'group_by':'name'}"/>
+					<filter string="Medicament" icon="terp-personal" domain="[]" context="{'group_by':'medicament'}"/>
+				</group>
+			</search>
+		</field>
+	</record>
+
+    <record model="ir.actions.act_window" id="medical_action_patien_medication">
+		<field name="name">Medications</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">medical.patient.medication</field>
+		<field name="view_type">form</field>
+		<field name="view_id" ref="medical_patient_medication_tree"/>
+	</record>
+     
                 
+     <menuitem action="medical_action_patien_medication" id="action_medical_patien_medications_tree" parent="medical_patients_menu" sequence="6"/>
+     
 
 
 
@@ -1140,17 +1179,127 @@
 <!-- PATIENT DISEASES -->
 					<page string="Diseases">
 						<separator string="Diseases" colspan="6"/>
-				        <field name="diseases" nolabel="1" widget="one2many_list"/>
+				        <field name="diseases" nolabel="1" widget="one2many_list">
+				        	<form string="Disease">
+								<notebook>
+									<page string="General">
+										<group colspan="6" col='6'>
+											<field name="pathology"></field>
+											<field name="doctor"></field>
+											<field name="disease_severity"></field>
+											<field name="status"></field>
+											<field name="is_infectious"></field>
+											<field name="is_active"></field>
+											<field name="diagnosed_date"></field>
+											<field name="healed_date"></field>
+											<field name="age"></field>
+											<field name="short_comment" colspan="4"/>
+										</group>
+										<newline/>
+										<group colspan="6" col='6'>
+											<separator string="Therapy"  colspan='6'/>
+											<field name="is_on_treatment"></field>
+											<field name="treatment_description"></field>
+											<field name="date_start_treatment"></field>
+											<field name="date_stop_treatment"></field>
+											<field name="pcs_code"></field>
+										</group>
+									</page>
+									<page string='Extra Info'>
+										<group col='4'>
+											<group colspan="4">
+												<separator string="Others"  colspan='4'/>
+												<field name="is_allergy"></field>
+												<field name="allergy_type"></field>
+												<field name="pregnancy_warning"></field>
+												<field name="weeks_of_pregnancy"></field>
+											</group>
+											<newline/>
+											<group colspan="4">
+												<separator string="Extra Info" colspan='4'/>
+												<field name="extra_info" nolabel="1" colspan='4'></field>
+											</group>
+										</group>
+									</page>
+								</notebook>
+							</form>
+				        </field>
 					</page>
 <!-- PATIENT Medications -->
 			        <page string="Medication">
 			        	<separator string="Medication" colspan="6"/>
-				        <field name="medications" string="Medication History" colspan="4" nolabel="1" widget="one2many_list"/>
+				        <field name="medications" string="Medication History" colspan="4" nolabel="1" widget="one2many_list">
+				        	<form string="Medication">
+	                        	<notebook>
+	                        		<page string="General medications data">
+	                        			<group col="4">
+		                        			<field colspan="2" name="medicament" required="1"></field>
+											<field colspan="2" name="doctor"/>
+											<field colspan="2" name="is_active"></field>
+			                         		<field colspan="2" name="indication"></field>
+			                         		<field colspan="2" name="start_treatment" required="1"></field>
+											<field colspan="2" name="end_treatment"></field>
+											<group col="4" colspan="2">
+												<field colspan="2" name="course_completed"></field>
+			                         			<field colspan="2" name="discontinued"></field>
+											</group>
+											<newline/>
+											<separator colspan="4" string="Discountinued reason"/>
+											<field colspan="4" nolabel="1" name="discontinued_reason"></field>
+	                        			</group>
+	                        		</page>
+	                        		<page string="Dosage">
+	                        			<group col="8">
+	            		              		<field colspan="4" name="form"></field>
+	                    		      		<field colspan="4" name="route"></field>
+											<group col="8" colspan="4" string="Dosage">
+												<field colspan="2" name="dose"></field>
+												<field colspan="2" name="dose_unit"></field>
+												<field colspan="4" name="qty"></field>
+											</group>
+											<group col="4" colspan="4" string="Durations">
+												<field colspan="2" name="duration"></field>
+		                           				<field colspan="2" name="duration_period"></field>
+											</group>
+											<group colspan="4" string="Common Dosage">
+												<field name="common_dosage" string="Common frequency"></field>
+												<field name="admin_times"></field>		
+											</group>
+											<group colspan="4" string="Specific Dosage">
+												<field name="frequency"></field>
+			                           			<field name="frequency_unit"></field>
+											</group>
+											<separator colspan="8" string="Notes"/>
+	                        				<field name="notes" nolabel="1" colspan="8"></field>
+										</group>
+	                        		</page>
+	                        	</notebook>
+							</form>
+				        </field>
 					</page>
 <!-- PATIENT Immunizations -->
 			        <page string="Immunizations">
 				        <separator string="Immunizations" colspan="6"/>
-				        <field name="vaccinations" string="Vaccinations History" colspan="4" nolabel="1" widget="one2many_list"/>
+				        <field name="vaccinations" string="Vaccinations History" colspan="4" nolabel="1" widget="one2many_list">
+				        	<form string="Patient Vaccinations">
+								<group col="6">
+									<group col="6" colspan="6">
+										<field name="vaccine" colspan="6" required="1"></field>
+										<newline/>
+										<field name="dose" required="1"></field>
+										<field name="institution"></field>
+										<field name="date" required="1" on_change="onchange_vaccination_expiration_date(date,vaccine_expiration_date)"/>
+										<field name="vaccine_expiration_date" required="1" on_change="onchange_vaccination_expiration_date(date,vaccine_expiration_date)"/>
+										<field name="vaccine_lot"></field>
+									</group>
+									<newline/>
+									<group colspan="6">
+										<separator colspan="6" string="Observations"/>
+										<field colspan="6" name="observations" nolabel="1"/>
+									</group>
+								</group>
+							</form>
+				        </field>
 					</page>
 <!-- PATIENT Evaluations -->
 			        <page string="Evaluations">
@@ -2294,7 +2443,7 @@
 							<group colspan="6" col='6'>
 								<field name="pathology"></field>
 								<field name="doctor"></field>
-								<field name="name" select="1"/>
+								<field name="name" select="1" required="1"/>
 								<field name="disease_severity"></field>
 								<field name="status"></field>
 								<field name="is_infectious"></field>
@@ -2880,7 +3029,7 @@
     	<field name="name">res.partner.form</field>
 	    <field name="model">res.partner</field>
 	    <!-- <field name="inherit_id" ref="base.view_partner_form" /> -->
-	    <field name="inherit_id" ref="medical_base.medical_view_partner_form_inherit" />
+	    <field name="inherit_id" ref="medical_view_partner_form_inherit" />
 	    <field name="type">form</field>
 		<field name="arch" type="xml">
 			<xpath expr="//form//field[@name='customer']" position="replace"/>

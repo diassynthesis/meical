@@ -21,25 +21,23 @@
 
 
 {
-    'name': 'jaf',
+    'name': 'Open-Medical',
     'version': '1.0',
-    'author': 'JAF S.A.',
-    'category': '?',
-    "website": "http://www.jaf.com",
-    "depends": ['base', 'account', 'resource', 'hr', 'base_contact',
-                'project'],
-    "description": """ Modules for jaf administration. Base component""",
+    'author': 'Eloquentia Solutions S.A de CV',
+    'category' : 'Medical verticalization',
+    'images': ['images/medical.png'],
+    "website": "http://www.eloquentia.simart.dtdns.net/",
+    "depends": ['medical', 'medical_structure', 'medical_genetics', 'medical_lifestyle', 'medical_socioeconomics'],
+    "description": """ Modules medical app""",
     "init_xml": [
 #        'data/jaf.country.state.csv',
 #        'data/jaf.municipality.csv',
                  ],
     "update_xml": [
-        'view/medical_locations_view.xml',
-        'view/medical_structure_base_menu.xml',
         ],
     'demo_xml': [],
     'test': [],
     'installable': True,
     'active': False,
-    'application': False
+    'application': True
 }

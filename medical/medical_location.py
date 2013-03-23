@@ -426,8 +426,8 @@ class medical_location(osv.osv):
                         string='Country', store=True, relation='res.country'),
         }
     _sql_constraints = [
-        ('code_locations_medical_uniq', 'unique(code)',
-         'The code must be unique per Location!'), ]
+        ('name_locations_medical_uniq', 'unique(name)',
+         'The name must be unique per Location!'), ]
 medical_location()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

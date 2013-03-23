@@ -735,12 +735,12 @@ class patient_medication (osv.osv):
 	_inherit = "medical.medication.template"
 	_description = "Patient Medication"
 	_columns = {
-		'name' : fields.many2one ('medical.patient','Patient ID',readonly=True),
+		'name' : fields.many2one ('medical.patient','Patient'),
 		'doctor' : fields.many2one('medical.physician','Physician', help="Physician who prescribed the medicament"),
 		'is_active' : fields.boolean('Active',help="Check this option if the patient is currently taking the medication"),
 		'discontinued' :  fields.boolean('Discontinued'),
 		'course_completed' : fields.boolean('Course Completed'),
-		'discontinued_reason' : fields.char ('Reason for discontinuation', size=128, help="Short description for discontinuing the treatment"),
+		'discontinued_reason' : fields.text ('Reason for discontinuation', help="Short description for discontinuing the treatment"),
 		'adverse_reaction' : fields.text ('Adverse Reactions',help="Specific side effects or adverse reactions that the patient experienced"),
 		'notes' : fields.text ('Extra Info'),
 #		'patient_id' : fields.many2one('medical.patient','Patient'),		

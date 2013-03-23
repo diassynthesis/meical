@@ -8,7 +8,7 @@
             <field name="name">Edit location</field>
             <field name="model">medical.location</field>
             <field name="type">form</field>
-            <field name="inherit_id" ref="medical_base.medical_view_location_form" />
+            <field name="inherit_id" ref="medical.medical_view_location_form" />
             <field name="arch" type="xml">
                 <form string="Edit location" position="replace">
 	                <form string="Edit location">
@@ -56,7 +56,7 @@
         <record id="medical_view_location_tree_inherit" model="ir.ui.view">
             <field name="name">Locations</field>
             <field name="model">medical.location</field>
-            <field name="inherit_id" ref="medical_base.medical_view_location_tree" />
+            <field name="inherit_id" ref="medical.medical_view_location_tree" />
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Locations" position="replace">
@@ -74,7 +74,7 @@
          <record id="medical_view_location_search_inherit" model="ir.ui.view">
             <field name="name">Location filters</field>
             <field name="model">medical.location</field>
-             <field name="inherit_id" ref="medical_base.medical_view_location_search" />
+             <field name="inherit_id" ref="medical.medical_view_location_search" />
             <field name="type">search</field>
             <field name="arch" type="xml">
                 <search string="Location search" position="replace">

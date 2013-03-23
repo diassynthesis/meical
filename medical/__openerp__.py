@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 {
 
-	'name' : 'Open-Medical',  
+	'name' : 'Medical-Base',  
 	'version' : '1.0',
 	'author' : 'Eloquenti@ Solutions SA de CV',
 	'category' : 'Medical verticalization',
-	'depends' : ['base','sale','purchase','account','product','medical_base','medical_structure'],
+	'depends' : ['base','base_contact','sale','purchase','account','product', 'resource', 'hr', 'project'],
 	'description' : """
 
 About Medical
@@ -59,7 +59,25 @@ Most of the action should occur at sourceforge, so check the main page http://so
 
 #	"update_xml" : ["medical_view.xml","medical_report.xml", "data/medical_sequences.xml","security/medical_security.xml","security/ir.model.access.csv"],
 
-	"update_xml" : ["medical_view.xml","medical_installer.xml","medical_report.xml", "data/medical_sequences.xml","security/medical_security.xml","security/ir.model.access.csv","data/ethnic_groups.xml","data/occupations.xml","data/dose_units.xml","data/HL7_drug_administration_routes.xml","data/medicament_form.xml","data/snomed_frequencies.xml","data/medicament_categories.xml","data/WHO_list_of_essential_medicines.xml","data/WHO_medicaments.xml","data/medical_specialties.xml"],
+	"update_xml" : [
+					'view/medical_locations_view.xml',
+        			'view/medical_structure_base_menu.xml',
+					"medical_view.xml",
+					"medical_installer.xml",
+					"medical_report.xml",
+					"data/medical_sequences.xml",
+					"security/medical_security.xml",
+					"security/ir.model.access.csv",
+					"data/ethnic_groups.xml",
+					"data/occupations.xml",
+					"data/dose_units.xml",
+					"data/HL7_drug_administration_routes.xml",
+					"data/medicament_form.xml",
+					"data/snomed_frequencies.xml",
+					"data/medicament_categories.xml",
+					"data/WHO_list_of_essential_medicines.xml",
+					"data/WHO_medicaments.xml",
+					"data/medical_specialties.xml"],
 
 # Use translation data files for diseases in the other modules.
 
@@ -80,6 +98,6 @@ Most of the action should occur at sourceforge, so check the main page http://so
 
 
 #	"update_xml" : ["medical_view.xml"],
-	"application" : True,
+	"application" : False,
 	"active": False 
 }
