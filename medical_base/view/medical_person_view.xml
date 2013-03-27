@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--
+        =========================================
+        medical Person
+        =========================================
+        -->
+
+
+        <record id="medical_person_view_form" model="ir.ui.view">
+            <field name="name">medical_person_view_form</field>
+            <field name="model">medical.person</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Person" col="1">
+                    <notebook colspan="6">
+                        <page string="Search Products">
+                            <group colspan="2" col="6">
+                              <field name="complete_name" colspan="2"/>
+                              <field name="alias" colspan="2"/>
+                              <field name="gender" colspan="2"/>
+                              <field name="age" colspan="2"/>
+                              <field name="birthdate" colspan="2" on_change="get_age(birthdate)"/>
+                              <field name="passport" colspan="2"/>
+                              <field name="expiration_date" colspan="2"/>
+                              <field name="license" colspan="2"/>
+                              <newline/>
+                              <field name="observation" colspan="6"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="medical_person_view_tree" model="ir.ui.view">
+            <field name="name">medical_person_view_tree</field>
+            <field name="model">medical.person</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Person" >
+                  <field name="complete_name" colspan="2"/>
+                  <field name="alias" colspan="2"/>
+                  <field name="gender" colspan="2"/>
+                  <field name="age" colspan="2"/>
+                  <field name="birthdate" colspan="2"/>
+                  <field name="passport" colspan="2"/>
+                  <field name="expiration_date" colspan="2"/>
+                  <field name="license" colspan="2"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

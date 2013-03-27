@@ -19,6 +19,4 @@
 #
 ##############################################################################
 
-import medical_location
-import medical_department
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -14,33 +14,12 @@
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU Affero General Public License for more details.
 #
-#    You should have received a copy of the GNU Affero General Public License
+#    You should have received a copy of the GNU Affero General Public Licensed
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 
-
-{
-    'name': 'medical_structure',
-    'version': '1.0',
-    'author': 'medical S.A.',
-    'category': '?',
-    "website": "http://www.medical.com",
-    "depends": ['medical_base', 'hr_holidays'],
-    "description": """ Modules for structure administration """,
-    "init_xml": [],
-    "update_xml": [
-         'view/medical_structure_view.xml',
-         'view/medical_department_view.xml',
-         'view/medical_employee_view.xml',
-         'view/medical_tool_view.xml',
-         'view/medical_local_view.xml',
-         'view/medical_locations_view.xml',
-         'view/medical_structure_menu.xml'
-        ],
-    'demo_xml': [],
-    'test': [],
-    'installable': True,
-    'active': False,
-    'application': False,
-}
+import medical_location
+import medical_person
+import medical_department
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

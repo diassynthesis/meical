@@ -47,7 +47,7 @@
          </record>
         
         <!--  Form     -->
-        <record id="view_department_form_medical" model="ir.ui.view">
+        <record id="view_department_form_jaf" model="ir.ui.view">
             <field name="name">Edit departments</field>
             <field name="model">hr.department</field>
             <field name="type">form</field>

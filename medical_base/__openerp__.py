@@ -21,26 +21,27 @@
 
 
 {
-    'name': 'medical_structure',
+    'name': 'medical',
     'version': '1.0',
     'author': 'medical S.A.',
     'category': '?',
     "website": "http://www.medical.com",
-    "depends": ['medical_base', 'hr_holidays'],
-    "description": """ Modules for structure administration """,
-    "init_xml": [],
+    "depends": ['base', 'account', 'resource', 'hr', 'base_contact',
+                'project'],
+    "description": """ Modules for medical administration. Base component""",
+    "init_xml": [
+#        'data/medical.country.state.csv',
+#        'data/medical.municipality.csv',
+                 ],
     "update_xml": [
-         'view/medical_structure_view.xml',
-         'view/medical_department_view.xml',
-         'view/medical_employee_view.xml',
-         'view/medical_tool_view.xml',
-         'view/medical_local_view.xml',
-         'view/medical_locations_view.xml',
-         'view/medical_structure_menu.xml'
+        'view/medical_menu.xml',
+        'view/medical_locations_view.xml',
+        'view/medical_structure_base_menu.xml',
+        'view/medical_person_view.xml',
         ],
     'demo_xml': [],
     'test': [],
     'installable': True,
     'active': False,
-    'application': False,
+    'application': False
 }

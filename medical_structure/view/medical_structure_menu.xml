@@ -17,7 +17,7 @@
 			<menuitem action="normal_action_medical_local_list" name="Locals" id="menu_left_medical_local_list" sequence="12" parent="base.menu_res_company_global"/>
 			
 			<!-- Company menu -->
-        	<!-- <menuitem action="normal_action_medical_structure_list" name="Companies" id="menu_left_medical_structure_list" sequence="1" parent="medical.menu_left_medical_structure"/> -->
+        	<!-- <menuitem action="normal_action_medical_structure_list" name="Companies" id="menu_left_medical_structure_list" sequence="1" parent="medical_base.menu_left_medical_structure"/> -->
         	
         	<!-- Tool menu -->
 			<menuitem action="normal_action_medical_tool_list" name="Resources" id="menu_left_medical_tool_list" sequence="14" parent="base.menu_res_company_global"/> 
@@ -25,7 +25,7 @@
 	<!-- Config actions menu -->
 			<!-- there is on base structure menu xml definitions -->
 			<!-- Tool menu -->
-			<menuitem name="Resources" id="menu_left_medical_tool_category" sequence="2" parent="medical.menu_left_medical_structure_config"/>
+			<menuitem name="Resources" id="menu_left_medical_tool_category" sequence="2" parent="medical_base.menu_left_medical_structure_config"/>
 	       	<menuitem action="normal_action_medical_tool_category_list" name="Category list" id="menu_left_medical_tool_category_list" sequence="1" parent="menu_left_medical_tool_category"/>
 	       	<menuitem action="normal_action_medical_tool_category_tree" name="Category tree" id="menu_left_medical_tool_category_tree" sequence="2" parent="menu_left_medical_tool_category"/>
         	

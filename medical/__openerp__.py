@@ -2,10 +2,10 @@
 {
 
 	'name' : 'Medical-Base',  
-	'version' : '1.0',
+	'version' : '0.1',
 	'author' : 'Eloquenti@ Solutions SA de CV',
 	'category' : 'Medical verticalization',
-	'depends' : ['base','base_contact','sale','purchase','account','product', 'resource', 'hr', 'project'],
+	'depends' : ['medical_base','sale','purchase','product'],
 	'description' : """
 
 About Medical
@@ -60,11 +60,9 @@ Most of the action should occur at sourceforge, so check the main page http://so
 #	"update_xml" : ["medical_view.xml","medical_report.xml", "data/medical_sequences.xml","security/medical_security.xml","security/ir.model.access.csv"],
 
 	"update_xml" : [
-					'view/medical_locations_view.xml',
-        			'view/medical_structure_base_menu.xml',
 					"medical_view.xml",
-					"medical_installer.xml",
 					"medical_report.xml",
+					"medical_installer.xml",
 					"data/medical_sequences.xml",
 					"security/medical_security.xml",
 					"security/ir.model.access.csv",

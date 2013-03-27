@@ -28,13 +28,56 @@
     'images': ['images/medical.png'],
     "website": "http://www.eloquentia.simart.dtdns.net/",
     "depends": ['medical', 'medical_structure', 'medical_genetics', 'medical_lifestyle', 'medical_socioeconomics'],
-    "description": """ Modules medical app""",
+    'description' : """
+
+About Medical
+-------------
+Medical is a multi-user, highly scalable, centralized Electronic Medical Record (EMR) and Hospital Information System for openERP.
+
+Medical provides a free universal Health and Hospital Information System, so doctors and institutions all over the world, specially in developing countries will benefit from a centralized, high quality, secure and scalable system.
+
+
+Medical at a glance:
+
+
+    * Strong focus in family medicine and Primary Health Care
+
+    * Major interest in Socio-economics (housing conditions, substance abuse, education...)
+
+    * Diseases and Medical procedures standards (like ICD-10 / ICD-10-PCS ...)
+
+    * Patient Genetic and Hereditary risks : Over 4200 genes related to diseases (NCBI / Genecards)
+
+    * Epidemiological and other statistical reports
+
+    * 100% paperless patient examination and history taking
+
+    * Patient Administration (creation, evaluations / consultations, history ... )
+
+    * Doctor Administration
+
+    * Lab Administration
+
+    * Medicine / Drugs information (vademécum)
+
+    * Medical stock and supply chain management
+
+    * Hospital Financial Administration
+
+    * Designed with industry standards in mind
+
+    * Open Source : Licensed under GPL 
+
+
+
+Most of the action should occur at sourceforge, so check the main page http://sourceforge.net/projects/medical for the latest news and developer releases. 
+
+""",
     "init_xml": [
 #        'data/jaf.country.state.csv',
 #        'data/jaf.municipality.csv',
                  ],
-    "update_xml": [
-        ],
+    "update_xml": [],
     'demo_xml': [],
     'test': [],
     'installable': True,
