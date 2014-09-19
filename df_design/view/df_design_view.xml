@@ -2,8 +2,8 @@
 <openerp>
     <data>
 		<record id="df_design_form_view" model="ir.ui.view">
-            <field name="name">df_design_form</field>
-            <field name="model">df_design</field>
+            <field name="name">df.design.form</field>
+            <field name="model">df.design</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Generate graph" >
